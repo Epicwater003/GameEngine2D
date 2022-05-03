@@ -18,7 +18,12 @@ Circle::Circle(std::vector<Texture>& textures, float radius, float resolution):
 }
 
 void Circle::Update() {
-
+	float angle = BodyContract->GetAngle();
+	glm::vec2 position = BodyContract->GetPosition();
+	glm::mat4 model(1);
+	model = glm::translate(model, glm::vec3(position.x,position.y, 0));
+	model = glm::rotate(model, angle, glm::vec3(0, 0, 1));
+	ObjectContract->SetModelMatrix(model);
 }
 
 
