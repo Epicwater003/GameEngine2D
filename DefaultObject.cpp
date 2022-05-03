@@ -1,7 +1,8 @@
 #include "DefaultObject.h"
 
 void DefaultObject::Draw(Shader& s, Camera & c) {
-	mesh.Draw(s, c, model);
+	
+	mesh.Draw(s, c, this->model);
 }
 
 void DefaultObject::Update() {

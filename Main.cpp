@@ -183,7 +183,11 @@ int main() {
 		c.resolution = res;
 		c.Reshape();
 		c.Move(glm::vec2(-2, -1));
-		c.Rotate(0.3);
+		static float angle = 0;
+		angle += 0.3;
+		
+		c.Rotate(angle);
+		c.Move(glm::vec2(1, 0) * angle * float(0.01));
 		
 		c.Update();
 		c.Draw(shaderProgram, ::mainCamera);
