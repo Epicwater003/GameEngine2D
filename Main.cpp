@@ -183,8 +183,8 @@ int main() {
 		c.resolution = res;
 		c.Reshape();
 		c.Move(glm::vec2(-2, -1));
-		c.Rotate((float)0.3);
-		c.Move(glm::vec2(-2, -1), 2);
+		c.Rotate(0.3);
+		
 		c.Update();
 		c.Draw(shaderProgram, ::mainCamera);
 		// ===================== TEST ZONE! NO ENTER! =========================

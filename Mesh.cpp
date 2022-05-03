@@ -1,48 +1,49 @@
 #include "Mesh.h"
 
 Mesh::Mesh(std::vector <Vertex>& vertices, std::vector <GLuint>& indices, std::vector <Texture>& textures): vertices(vertices), indices(indices), textures(textures){
-	VAO.Bind();
+	vao->Bind();
 	
 	VBO VBO(vertices);
 	EBO EBO(indices);
 	
-	VAO.LinkAttrib(VBO, 0, 3, GL_FLOAT, sizeof(Vertex), (void*)0);
-	VAO.LinkAttrib(VBO, 1, 3, GL_FLOAT, sizeof(Vertex), (void*)(3 * sizeof(float)));
-	VAO.LinkAttrib(VBO, 2, 3, GL_FLOAT, sizeof(Vertex), (void*)(6 * sizeof(float)));
-	VAO.LinkAttrib(VBO, 3, 2, GL_FLOAT, sizeof(Vertex), (void*)(9 * sizeof(float)));
+	vao->LinkAttrib(VBO, 0, 3, GL_FLOAT, sizeof(Vertex), (void*)0);
+	vao->LinkAttrib(VBO, 1, 3, GL_FLOAT, sizeof(Vertex), (void*)(3 * sizeof(float)));
+	vao->LinkAttrib(VBO, 2, 3, GL_FLOAT, sizeof(Vertex), (void*)(6 * sizeof(float)));
+	vao->LinkAttrib(VBO, 3, 2, GL_FLOAT, sizeof(Vertex), (void*)(9 * sizeof(float)));
 	
-	VAO.Unbind();
+	vao->Unbind();
 	VBO.Unbind();
 	EBO.Unbind();
 }
 
 Mesh::Mesh(std::vector <Vertex>& vertices, std::vector <GLuint>& indices) : vertices(vertices), indices(indices) {
-	VAO.Bind();
+	vao->Bind();
 
 	VBO VBO(vertices);
 	EBO EBO(indices);
 
-	VAO.LinkAttrib(VBO, 0, 3, GL_FLOAT, sizeof(Vertex), (void*)0);
-	VAO.LinkAttrib(VBO, 1, 3, GL_FLOAT, sizeof(Vertex), (void*)(3 * sizeof(float)));
-	VAO.LinkAttrib(VBO, 2, 3, GL_FLOAT, sizeof(Vertex), (void*)(6 * sizeof(float)));
-	VAO.LinkAttrib(VBO, 3, 2, GL_FLOAT, sizeof(Vertex), (void*)(9 * sizeof(float)));
+	vao->LinkAttrib(VBO, 0, 3, GL_FLOAT, sizeof(Vertex), (void*)0);
+	vao->LinkAttrib(VBO, 1, 3, GL_FLOAT, sizeof(Vertex), (void*)(3 * sizeof(float)));
+	vao->LinkAttrib(VBO, 2, 3, GL_FLOAT, sizeof(Vertex), (void*)(6 * sizeof(float)));
+	vao->LinkAttrib(VBO, 3, 2, GL_FLOAT, sizeof(Vertex), (void*)(9 * sizeof(float)));
 
-	VAO.Unbind();
+	vao->Unbind();
 	VBO.Unbind();
 	EBO.Unbind();
 }
+
 
 Mesh::Mesh(const Mesh& refMesh) {
 	vertices = refMesh.vertices;
 	indices  = refMesh.indices;
 	textures = refMesh.textures;
-	VAO = refMesh.VAO;
+	vao = new VAO();
 }
 
 
 void Mesh::Draw(Shader& shader, Camera &camera){
 	shader.Activate();
-	VAO.Bind();
+	vao->Bind();
 
 	unsigned int numDiffuse  = 0;
 	unsigned int numSpecular = 0;
@@ -71,7 +72,7 @@ void Mesh::Draw(Shader& shader, Camera &camera){
 }
 void Mesh::Draw(Shader& shader, Camera& camera, glm::mat4 &model) {
 	shader.Activate();
-	VAO.Bind();
+	vao->Bind();
 
 	unsigned int numDiffuse = 0;
 	unsigned int numSpecular = 0;
@@ -108,17 +109,17 @@ void Mesh::AttachTextures(std::vector<Texture> &textures) {
 	this->textures = textures;
 }
 void Mesh::ReloadData() {
-	VAO.Bind();
+	vao->Bind();
 
 	VBO VBO(vertices);
 	EBO EBO(indices);
 
-	VAO.LinkAttrib(VBO, 0, 3, GL_FLOAT, sizeof(Vertex), (void*)0);
-	VAO.LinkAttrib(VBO, 1, 3, GL_FLOAT, sizeof(Vertex), (void*)(3 * sizeof(float)));
-	VAO.LinkAttrib(VBO, 2, 3, GL_FLOAT, sizeof(Vertex), (void*)(6 * sizeof(float)));
-	VAO.LinkAttrib(VBO, 3, 2, GL_FLOAT, sizeof(Vertex), (void*)(9 * sizeof(float)));
+	vao->LinkAttrib(VBO, 0, 3, GL_FLOAT, sizeof(Vertex), (void*)0);
+	vao->LinkAttrib(VBO, 1, 3, GL_FLOAT, sizeof(Vertex), (void*)(3 * sizeof(float)));
+	vao->LinkAttrib(VBO, 2, 3, GL_FLOAT, sizeof(Vertex), (void*)(6 * sizeof(float)));
+	vao->LinkAttrib(VBO, 3, 2, GL_FLOAT, sizeof(Vertex), (void*)(9 * sizeof(float)));
 
-	VAO.Unbind();
+	vao->Unbind();
 	VBO.Unbind();
 	EBO.Unbind();
 }

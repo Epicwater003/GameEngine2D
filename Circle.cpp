@@ -1,23 +1,24 @@
 #include "Circle.h"
 
 Circle::Circle(float radius, float resolution):
-	GameObject(),
+	IGameObject(),
 	radius(radius),
 	resolution(resolution)
 {
-	
+	ObjectContract->SetMesh(CreateCircleMesh(resolution));
 }
 
 Circle::Circle(std::vector<Texture>& textures, float radius, float resolution):
-	GameObject(),
+	IGameObject(),
 	radius(radius),
 	resolution(resolution) 
 {
-	mesh.AttachTextures(textures);
+	ObjectContract->SetMesh(CreateCircleMesh(resolution));
+	//mesh.AttachTextures(textures);
 }
 
-void Circle::Draw(Shader& s, Camera& c) {
-	mesh.Draw(s, c, model);
+void Circle::Update() {
+
 }
 
 
@@ -27,7 +28,7 @@ Mesh Circle::CreateCircleMesh(float resolution) {
 	Vertex vert = {
 		glm::vec3(0.,0.,0.),
 		glm::vec2(0.5,0.5) ,
-		this->color
+		this->ObjectContract->GetColor()
 	};
 
 	vertices.push_back(vert);
@@ -39,7 +40,7 @@ Mesh Circle::CreateCircleMesh(float resolution) {
 		vert = {
 			glm::vec3(x,y,0.),
 			glm::vec2(u,v),
-			this->color
+			this->ObjectContract->GetColor()
 		};
 		vertices.push_back(vert);
 	}

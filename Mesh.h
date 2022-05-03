@@ -17,6 +17,7 @@ public:
 	
 	Mesh(std::vector <Vertex>& vertices, std::vector <GLuint>& indices, std::vector <Texture>& textures);
 	Mesh(std::vector <Vertex>& vertices, std::vector <GLuint>& indices);
+	Mesh();
 	Mesh(const Mesh& refMesh);
 	void Draw(Shader& shader, Camera& camera, glm::mat4 &model);
 	void Draw(Shader &shader, Camera &camera);
@@ -29,7 +30,7 @@ private:
 	std::vector <GLuint> indices;
 	std::vector <Texture> textures;
 	
-	VAO VAO;
+	VAO * vao = new VAO();
 };
 
 

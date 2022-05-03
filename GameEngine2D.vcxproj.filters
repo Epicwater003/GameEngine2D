@@ -34,6 +34,12 @@
     <Filter Include="Исходные файлы\GameObjects">
       <UniqueIdentifier>{d536ef3c-a96a-4ed1-b61e-a440a528dcf5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Исходные файлы\Interface\Implementation">
+      <UniqueIdentifier>{95d4fc59-f54d-4406-997b-068116f77c3c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы заголовков\Interfaces\Implementation">
+      <UniqueIdentifier>{01504230-c32f-4ae0-8432-d826e5110e7b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -81,18 +87,6 @@
     <ClCompile Include="Texture.cpp">
       <Filter>Исходные файлы\Utility</Filter>
     </ClCompile>
-    <ClCompile Include="GameObject.cpp">
-      <Filter>Исходные файлы\GameObjects</Filter>
-    </ClCompile>
-    <ClCompile Include="IBaseInterface.cpp">
-      <Filter>Исходные файлы\Interface</Filter>
-    </ClCompile>
-    <ClCompile Include="ILightSource.cpp">
-      <Filter>Исходные файлы\Interface</Filter>
-    </ClCompile>
-    <ClCompile Include="IRigidBody.cpp">
-      <Filter>Исходные файлы\Interface</Filter>
-    </ClCompile>
     <ClCompile Include="GameEngine.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
@@ -111,21 +105,15 @@
     <ClCompile Include="Line.cpp">
       <Filter>Исходные файлы\GameObjects</Filter>
     </ClCompile>
-    <ClCompile Include="INoPhysical.cpp">
-      <Filter>Исходные файлы\Interface</Filter>
+    <ClCompile Include="RigidBody2D.cpp">
+      <Filter>Исходные файлы\Interface\Implementation</Filter>
+    </ClCompile>
+    <ClCompile Include="DefaultObject.cpp">
+      <Filter>Исходные файлы\Interface\Implementation</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="GameObject.h">
-      <Filter>Файлы заголовков\GameObjects</Filter>
-    </ClInclude>
     <ClInclude Include="IBaseInterface.h">
-      <Filter>Файлы заголовков\Interfaces</Filter>
-    </ClInclude>
-    <ClInclude Include="IRigidBody.h">
-      <Filter>Файлы заголовков\Interfaces</Filter>
-    </ClInclude>
-    <ClInclude Include="ILightSource.h">
       <Filter>Файлы заголовков\Interfaces</Filter>
     </ClInclude>
     <ClInclude Include="GameEngine.h">
@@ -164,8 +152,23 @@
     <ClInclude Include="Line.h">
       <Filter>Файлы заголовков\GameObjects</Filter>
     </ClInclude>
-    <ClInclude Include="INoPhysical.h">
+    <ClInclude Include="IBody2D.h">
       <Filter>Файлы заголовков\Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="ICollision.h">
+      <Filter>Файлы заголовков\Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="IResponse.h">
+      <Filter>Файлы заголовков\Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="IGameObject.h">
+      <Filter>Файлы заголовков\Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="RigidBody2D.h">
+      <Filter>Файлы заголовков\Interfaces\Implementation</Filter>
+    </ClInclude>
+    <ClInclude Include="DefaultObject.h">
+      <Filter>Файлы заголовков\Interfaces\Implementation</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
