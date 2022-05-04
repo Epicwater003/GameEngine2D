@@ -180,6 +180,8 @@ int main() {
 		shaderProgram.Activate();
 		shaderProgram.setMat4("eModel", objectModel);
 		floor.Draw(shaderProgram, ::mainCamera);
+
+
 		c.resolution = res;
 		c.Reshape();
 		c.Move(glm::vec2(-2, -1));

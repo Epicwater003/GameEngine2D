@@ -111,6 +111,9 @@
     <ClCompile Include="DefaultObject.cpp">
       <Filter>Исходные файлы\Interface\Implementation</Filter>
     </ClCompile>
+    <ClCompile Include="AABB.cpp">
+      <Filter>Исходные файлы\Interface\Implementation</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="IBaseInterface.h">
@@ -168,6 +171,9 @@
       <Filter>Файлы заголовков\Interfaces\Implementation</Filter>
     </ClInclude>
     <ClInclude Include="DefaultObject.h">
+      <Filter>Файлы заголовков\Interfaces\Implementation</Filter>
+    </ClInclude>
+    <ClInclude Include="AABB2D.h">
       <Filter>Файлы заголовков\Interfaces\Implementation</Filter>
     </ClInclude>
   </ItemGroup>

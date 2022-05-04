@@ -15,19 +15,17 @@ class Circle :
     public IBody2D
 {
 public:
+    // Конструкторы
     Circle(float radius = 1., float resolution = 7);
     Circle(std::vector<Texture> &textures, float radius = 1., float resolution = 7);
-
+    // Параметры
     float radius = 1.;
     float resolution = 7.;
-
+    // Контракты
     IGameObject* ObjectContract = new DefaultObject();
     IBody2D* BodyContract = new RigidBody2D();
-
-    
-    //Mesh mesh = CreateCircleMesh(resolution);
-
-    void Reshape() { ObjectContract->SetMesh(CreateCircleMesh(resolution)); };
+    // Методы
+    void Reshape() { ObjectContract->SetMesh(CreateCircleMesh(resolution)); }
 
     /*========================================*/
     Mesh GetMesh()             { return ObjectContract->GetMesh()       ; }
