@@ -33,6 +33,9 @@
 #include "Shader.h"
 #include "Camera.h"
 
+#include "ICollision.h"
+#include "AABB2D.h"
+
 #include "Circle.h"
 
 void calculateGlobalDeltaTime();
@@ -145,7 +148,10 @@ int main() {
 	Mesh floor(verts, ind, tex);
 
 	Circle c;
+	Circle cc;
 	static int res = 2;
+
+	ICollision* collision = new AABB2D();
 	// ===================== TEST ZONE! NO ENTER! =========================
 
 	while (!glfwWindowShouldClose(window)){	                // Игровой цикл
@@ -185,14 +191,17 @@ int main() {
 		c.resolution = res;
 		c.Reshape();
 		c.Move(glm::vec2(-2, -1));
+		cc.Move(glm::vec2(-1, 1));
 		static float angle = 0;
 		angle += 0.3;
 		
-		c.Rotate(angle);
+		//c.Rotate(angle);
 		c.Move(glm::vec2(1, 0) * angle * float(0.01));
-		
+		std::cout << collision->isPossibleToCollide(c, cc) << std::endl;
 		c.Update();
+		cc.Update();
 		c.Draw(shaderProgram, ::mainCamera);
+		cc.Draw(shaderProgram, ::mainCamera);
 		// ===================== TEST ZONE! NO ENTER! =========================
 
 		//floor.Draw(shaderProgram, ::mainCamera);
