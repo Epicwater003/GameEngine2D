@@ -6,30 +6,35 @@
 #ifndef RIGIDBODY_H
 #define RIGIDBODY_H
 
-#include "IBody2D.h"
+#include "IBody.h"
 #include "Mesh.h"
 #include <glm/glm.hpp>
 
 class RigidBody2D: 
-	public IBody2D 
+	public IBody 
 {
 public:
-	glm::vec2 GetPosition()        { return position           ; }
-	glm::vec2 GetDirection()       { return direction          ; }
-	glm::vec2 GetVelocity()        { return velocity           ; }
-	glm::vec2 GetAcceleration()    { return acceleration       ; }
-	glm::vec2 GetMassCenter()      { return massCenter         ; }
+
+	IBody*    GetBody()            { return this; }
+	glm::vec3 GetPosition()        { return glm::vec3(position.x, position.y, zIndex); }
+	glm::vec3 GetDirection()       { return glm::vec3(direction.x,direction.y,0); }
+	glm::vec3 GetVelocity() { return glm::vec3(velocity.x, velocity.y, 0);}
+	glm::vec3 GetAcceleration() { return glm::vec3(acceleration.x, acceleration.y, 0); }
+	glm::vec3 GetMassCenter()      { return glm::vec3(massCenter.x,massCenter.y,0); }
 	float GetDensity()             { return density            ; }
 	float GetMass()                { return mass               ; }
 	float GetAngle()               { return angle              ; }
 	float GetAngularVelocity()     { return angularVelocity    ; }
 	float GetAngularAcceleration() { return angularAcceleration; }
 
-	void SetPosition(glm::vec2 p)        { position = p           ; }
-	void SetDirection(glm::vec2 d)       { direction = d          ; }
-	void SetVelocity(glm::vec2 v)        { velocity = v           ; }
-	void SetAcceleration(glm::vec2 a)    { acceleration = a       ; }
-	void SetMassCenter(glm::vec2 mc)     { massCenter = mc        ; }
+	void SetBody(IBody& body) {
+		//position = body.GetPosition(); TODO: Реализовать
+	};
+	void SetPosition(glm::vec3 p) { position = { p.x,p.y }; }
+	void SetDirection(glm::vec3 d) { direction = { d.x, d.y }; }
+	void SetVelocity(glm::vec3 v) { velocity = { v.x,v.y }; }
+	void SetAcceleration(glm::vec3 a) { acceleration = { a.x,a.y }; }
+	void SetMassCenter(glm::vec3 mc) { massCenter = { mc.x,mc.y }; }
 	void SetDensity(float d)             { density = d            ; }
 	void SetMass(float m)                { mass = m               ; }
 	void SetAngle(float a)               { angle = a              ; }
@@ -37,11 +42,12 @@ public:
 	void SetAngularAcceleration(float e) { angularAcceleration = e; }
 	
 protected:
-	void Move(glm::vec2 position)          ;         // Перемещение в соответствии с вектором скорости и временем кадра
+	void Move(glm::vec3 position)          ;         // Перемещение в соответствии с вектором скорости и временем кадра
 	void Rotate(float angle)               ;         // Поворот относительно центра масс по времени
-	glm::vec2 CalculateMassCenter();         // Расчет центра масс
-    glm::vec2 CalculateMassCenter(Mesh m);           // Универсальный расчет центра масс в зависимости от меша
+	glm::vec3 CalculateMassCenter();			     // Расчет центра масс
+    glm::vec3 CalculateMassCenter(Mesh m);           // Универсальный расчет центра масс в зависимости от меша
 private:
+	float zIndex  = 0.;
 	glm::vec2 position     = { 0., 0. }; // Позиция
 	glm::vec2 direction    = { 0., 1. }; // Вектор направления(лицо объекта)
 	glm::vec2 velocity     = { 0., 0. }; // Скорость

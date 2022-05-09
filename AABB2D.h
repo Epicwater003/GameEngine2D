@@ -1,8 +1,8 @@
 #ifndef AABB2D_H
 #define AABB2D_H
 
-#include "ICollision.h"
-#include "IGameObject.h"
+#include "ICollisionEngine.h"
+#include "IShape.h"
 #include <glm/glm.hpp>
 
 struct AABoundingBox2D {
@@ -16,11 +16,11 @@ struct AABoundingBox2D {
 };
 
 class AABB2D:
-	public ICollision
+	public ICollisionEngine
 {
 public:
 	
-	AABoundingBox2D GenerateBoundingBox(IGameObject& go) {
+	AABoundingBox2D GenerateBoundingBox(IShape& go) {
 		Mesh m = go.GetMesh();
 		glm::mat4 modelMat = go.GetModelMatrix();
 		std::vector<Vertex> vs = m.getVertices();
@@ -48,7 +48,7 @@ public:
 		//std::cout << "AABB a:" << a.min.x << " " << a.min.y << " " << a.max.x << " " << a.max.y << std::endl;
 		return a; 
 	};
-	bool isPossibleToCollide(IGameObject& a, IGameObject& b) {
+	bool isPossibleToCollide(IShape& a, IShape& b) {
 		AABoundingBox2D aabbA = GenerateBoundingBox(a);
 		AABoundingBox2D aabbB = GenerateBoundingBox(b);
 		//std::cout << "AABB A:" << aabbA.min.x << " " << aabbA.min.y << " " << aabbA.max.x << " " << aabbA.max.y << std::endl;

@@ -13,12 +13,6 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Исходные файлы\lib">
-      <UniqueIdentifier>{2cb2b0c3-2f40-476c-a668-e2c6e57a7049}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Файлы заголовков\Interfaces">
-      <UniqueIdentifier>{850efee7-7d6c-42e3-bb58-d66562d2cd0f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Файлы заголовков\GameObjects">
       <UniqueIdentifier>{98d99b5a-eba0-48cb-8443-c688ee2e69d3}</UniqueIdentifier>
     </Filter>
@@ -28,54 +22,48 @@
     <Filter Include="Исходные файлы\Utility">
       <UniqueIdentifier>{fa897243-6390-4bf4-b39e-57fd7dd27a3a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Исходные файлы\Interface">
-      <UniqueIdentifier>{a639e82f-0439-4aff-a21e-cd2a1fe3ec60}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Исходные файлы\GameObjects">
       <UniqueIdentifier>{d536ef3c-a96a-4ed1-b61e-a440a528dcf5}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Исходные файлы\Interface\Implementation">
-      <UniqueIdentifier>{95d4fc59-f54d-4406-997b-068116f77c3c}</UniqueIdentifier>
+    <Filter Include="Interfaces">
+      <UniqueIdentifier>{850efee7-7d6c-42e3-bb58-d66562d2cd0f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Файлы заголовков\Interfaces\Implementation">
+    <Filter Include="Interfaces\Implementation">
       <UniqueIdentifier>{01504230-c32f-4ae0-8432-d826e5110e7b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="lib">
+      <UniqueIdentifier>{2cb2b0c3-2f40-476c-a668-e2c6e57a7049}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Main.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
     <ClCompile Include="glad.c">
-      <Filter>Исходные файлы\lib</Filter>
+      <Filter>lib</Filter>
     </ClCompile>
     <ClCompile Include="imgui.cpp">
-      <Filter>Исходные файлы\lib</Filter>
+      <Filter>lib</Filter>
     </ClCompile>
     <ClCompile Include="imgui_demo.cpp">
-      <Filter>Исходные файлы\lib</Filter>
+      <Filter>lib</Filter>
     </ClCompile>
     <ClCompile Include="imgui_draw.cpp">
-      <Filter>Исходные файлы\lib</Filter>
+      <Filter>lib</Filter>
     </ClCompile>
     <ClCompile Include="imgui_impl_glfw.cpp">
-      <Filter>Исходные файлы\lib</Filter>
+      <Filter>lib</Filter>
     </ClCompile>
     <ClCompile Include="imgui_impl_opengl3.cpp">
-      <Filter>Исходные файлы\lib</Filter>
+      <Filter>lib</Filter>
     </ClCompile>
     <ClCompile Include="imgui_tables.cpp">
-      <Filter>Исходные файлы\lib</Filter>
+      <Filter>lib</Filter>
     </ClCompile>
     <ClCompile Include="imgui_widgets.cpp">
-      <Filter>Исходные файлы\lib</Filter>
+      <Filter>lib</Filter>
     </ClCompile>
     <ClCompile Include="Shader.cpp">
       <Filter>Исходные файлы\Utility</Filter>
     </ClCompile>
     <ClCompile Include="Buffer.cpp">
-      <Filter>Исходные файлы\Utility</Filter>
-    </ClCompile>
-    <ClCompile Include="AbstractFactory.cpp">
       <Filter>Исходные файлы\Utility</Filter>
     </ClCompile>
     <ClCompile Include="Camera.cpp">
@@ -91,13 +79,10 @@
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="stb.cpp">
-      <Filter>Исходные файлы\lib</Filter>
+      <Filter>lib</Filter>
     </ClCompile>
     <ClCompile Include="Square.cpp">
       <Filter>Исходные файлы\GameObjects</Filter>
-    </ClCompile>
-    <ClCompile Include="BoundingBox.cpp">
-      <Filter>Исходные файлы\Utility</Filter>
     </ClCompile>
     <ClCompile Include="Circle.cpp">
       <Filter>Исходные файлы\GameObjects</Filter>
@@ -105,20 +90,15 @@
     <ClCompile Include="Line.cpp">
       <Filter>Исходные файлы\GameObjects</Filter>
     </ClCompile>
+    <ClCompile Include="DefaultShape.cpp">
+      <Filter>Interfaces\Implementation</Filter>
+    </ClCompile>
     <ClCompile Include="RigidBody2D.cpp">
-      <Filter>Исходные файлы\Interface\Implementation</Filter>
+      <Filter>Interfaces\Implementation</Filter>
     </ClCompile>
-    <ClCompile Include="DefaultObject.cpp">
-      <Filter>Исходные файлы\Interface\Implementation</Filter>
-    </ClCompile>
-    <ClCompile Include="AABB.cpp">
-      <Filter>Исходные файлы\Interface\Implementation</Filter>
-    </ClCompile>
+    <ClCompile Include="Main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="IBaseInterface.h">
-      <Filter>Файлы заголовков\Interfaces</Filter>
-    </ClInclude>
     <ClInclude Include="GameEngine.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
@@ -137,9 +117,6 @@
     <ClInclude Include="Texture.h">
       <Filter>Файлы заголовков\Utility</Filter>
     </ClInclude>
-    <ClInclude Include="AbstractFactory.h">
-      <Filter>Файлы заголовков\Utility</Filter>
-    </ClInclude>
     <ClInclude Include="Vertex.h">
       <Filter>Файлы заголовков\Utility</Filter>
     </ClInclude>
@@ -155,26 +132,35 @@
     <ClInclude Include="Line.h">
       <Filter>Файлы заголовков\GameObjects</Filter>
     </ClInclude>
-    <ClInclude Include="IBody2D.h">
-      <Filter>Файлы заголовков\Interfaces</Filter>
+    <ClInclude Include="IBody.h">
+      <Filter>Interfaces</Filter>
     </ClInclude>
-    <ClInclude Include="ICollision.h">
-      <Filter>Файлы заголовков\Interfaces</Filter>
+    <ClInclude Include="ICollisionEngine.h">
+      <Filter>Interfaces</Filter>
     </ClInclude>
-    <ClInclude Include="IResponse.h">
-      <Filter>Файлы заголовков\Interfaces</Filter>
+    <ClInclude Include="IResponseEngine.h">
+      <Filter>Interfaces</Filter>
     </ClInclude>
-    <ClInclude Include="IGameObject.h">
-      <Filter>Файлы заголовков\Interfaces</Filter>
+    <ClInclude Include="IShape.h">
+      <Filter>Interfaces</Filter>
     </ClInclude>
     <ClInclude Include="RigidBody2D.h">
-      <Filter>Файлы заголовков\Interfaces\Implementation</Filter>
+      <Filter>Interfaces\Implementation</Filter>
     </ClInclude>
-    <ClInclude Include="DefaultObject.h">
-      <Filter>Файлы заголовков\Interfaces\Implementation</Filter>
+    <ClInclude Include="DefaultShape.h">
+      <Filter>Interfaces\Implementation</Filter>
     </ClInclude>
     <ClInclude Include="AABB2D.h">
-      <Filter>Файлы заголовков\Interfaces\Implementation</Filter>
+      <Filter>Interfaces\Implementation</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObject.h">
+      <Filter>Файлы заголовков\GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="ICollide.h">
+      <Filter>Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="Particle.h">
+      <Filter>Файлы заголовков\GameObjects</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

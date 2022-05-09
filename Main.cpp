@@ -21,22 +21,28 @@
 */
 
 #include <iostream>
-// TODO: вынести в прекомпайл хидер
+#include <fstream>
+#include <vector>
+#include <string>
+
+#include <glm/glm.hpp>
+
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
-#include <glm/glm.hpp>
-#include "imgui/imgui.h"
-#include "imgui/imgui_impl_glfw.h"
-#include "imgui/imgui_impl_opengl3.h"
 
-#include "Mesh.h"
-#include "Shader.h"
+#include <imgui/imgui.h>
+#include <imgui/imgui_impl_glfw.h>
+#include <imgui/imgui_impl_opengl3.h>
+
 #include "Camera.h"
-
-#include "ICollision.h"
-#include "AABB2D.h"
-
+#include "Vertex.h"
+#include "Texture.h"
+#include "Mesh.h"
 #include "Circle.h"
+#include "ICollisionEngine.h"
+#include "AABB2D.h"
+#include "GameEngine.h"
+
 
 void calculateGlobalDeltaTime();
 void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mode);
@@ -151,7 +157,7 @@ int main() {
 	Circle cc;
 	static int res = 2;
 
-	ICollision* collision = new AABB2D();
+	ICollisionEngine* collision = new AABB2D();
 	// ===================== TEST ZONE! NO ENTER! =========================
 
 	while (!glfwWindowShouldClose(window)){	                // Игровой цикл
@@ -190,13 +196,14 @@ int main() {
 
 		c.resolution = res;
 		c.Reshape();
-		c.Move(glm::vec2(-2, -1));
-		cc.Move(glm::vec2(-1, 1));
+		c.Move(glm::vec3(-2, -1,0));
+		cc.Move(glm::vec3(-1, 1,0));
 		static float angle = 0;
 		angle += 0.3;
 		
 		//c.Rotate(angle);
-		c.Move(glm::vec2(1, 0) * angle * float(0.01));
+		c.Move(glm::vec3(1, 0,0) * angle * float(0.01));
+		
 		std::cout << collision->isPossibleToCollide(c, cc) << std::endl;
 		c.Update();
 		cc.Update();

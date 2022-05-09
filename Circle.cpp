@@ -1,29 +1,29 @@
 #include "Circle.h"
 
 Circle::Circle(float radius, float resolution):
-	IGameObject(),
+	GameObject(),
 	radius(radius),
 	resolution(resolution)
 {
-	ObjectContract->SetMesh(CreateCircleMesh(resolution));
+	Shape->SetMesh(CreateCircleMesh(resolution));
 }
 
 Circle::Circle(std::vector<Texture>& textures, float radius, float resolution):
-	IGameObject(),
+	GameObject(),
 	radius(radius),
 	resolution(resolution) 
 {
-	ObjectContract->SetMesh(CreateCircleMesh(resolution));
+	Shape->SetMesh(CreateCircleMesh(resolution));
 	//mesh.AttachTextures(textures);
 }
 
 void Circle::Update() {
-	float angle = BodyContract->GetAngle();
-	glm::vec2 position = BodyContract->GetPosition();
+	float angle = Body->GetAngle();
+	glm::vec3 position = Body->GetPosition();
 	glm::mat4 model(1);
-	model = glm::translate(model, glm::vec3(position.x,position.y, 0));
+	model = glm::translate(model, position);
 	model = glm::rotate(model, angle, glm::vec3(0, 0, 1));
-	ObjectContract->SetModelMatrix(model);
+	Shape->SetModelMatrix(model);
 }
 
 
@@ -33,7 +33,7 @@ Mesh Circle::CreateCircleMesh(float resolution) {
 	Vertex vert = {
 		glm::vec3(0.,0.,0.),
 		glm::vec2(0.5,0.5) ,
-		this->ObjectContract->GetColor()
+		this->Shape->GetColor()
 	};
 
 	vertices.push_back(vert);
@@ -45,7 +45,7 @@ Mesh Circle::CreateCircleMesh(float resolution) {
 		vert = {
 			glm::vec3(x,y,0.),
 			glm::vec2(u,v),
-			this->ObjectContract->GetColor()
+			this->Shape->GetColor()
 		};
 		vertices.push_back(vert);
 	}
@@ -64,6 +64,6 @@ Mesh Circle::CreateCircleMesh(float resolution) {
 
 	return Mesh(vertices, indices);
 }
-glm::vec2 Circle::CalculateMassCenter() {
-	return glm::vec2(0);
+glm::vec3 Circle::CalculateMassCenter() {
+	return glm::vec3(0);
 }

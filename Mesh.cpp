@@ -97,6 +97,8 @@ void Mesh::Draw(Shader& shader, Camera& camera, glm::mat4 &model) {
 	shader.setMat4("eView", camera.getViewMatrix());
 	shader.setMat4("eProjection", camera.getPerspProjectionMatrix());
 	shader.setMat4("eModel", model);
+	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); TODO: ƒобавить возможность отрисовки лини€ми
+	//glDrawElements(GL_LINES, indices.size(), GL_UNSIGNED_INT, 0);
 	glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
 }
 

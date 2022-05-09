@@ -1,4 +1,4 @@
-#include"Texture.h"
+#include "Texture.h"
 
 Texture::Texture(const char* image, const char* texType, GLenum slot, GLenum format, GLenum pixelType){
 	type = texType;

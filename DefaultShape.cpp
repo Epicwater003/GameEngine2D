@@ -1,16 +1,16 @@
-#include "DefaultObject.h"
+#include "DefaultShape.h"
 
-void DefaultObject::Draw(Shader& s, Camera & c) {
+void DefaultShape::Draw(Shader& s, Camera & c) {
 	
 	mesh.Draw(s, c, this->model);
 }
 
-void DefaultObject::Update() {
+void DefaultShape::Update() {
 			 // TODO: Написать хоть что-то :D
 }
 
 
-Mesh DefaultObject::CreateMesh() {
+Mesh DefaultShape::CreateMesh() {
 	std::vector<Vertex> v;
 	std::vector<GLuint> i;
 	i.push_back(0);
