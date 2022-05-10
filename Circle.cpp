@@ -5,7 +5,7 @@ Circle::Circle(float radius, float resolution):
 	radius(radius),
 	resolution(resolution)
 {
-	Shape->SetMesh(CreateCircleMesh(resolution));
+	Shape->SetMesh(*CreateCircleMesh(resolution));
 }
 
 Circle::Circle(std::vector<Texture>& textures, float radius, float resolution):
@@ -13,21 +13,11 @@ Circle::Circle(std::vector<Texture>& textures, float radius, float resolution):
 	radius(radius),
 	resolution(resolution) 
 {
-	Shape->SetMesh(CreateCircleMesh(resolution));
-	//mesh.AttachTextures(textures);
-}
-
-void Circle::Update() {
-	float angle = Body->GetAngle();
-	glm::vec3 position = Body->GetPosition();
-	glm::mat4 model(1);
-	model = glm::translate(model, position);
-	model = glm::rotate(model, angle, glm::vec3(0, 0, 1));
-	Shape->SetModelMatrix(model);
+	Shape->SetMesh(*CreateCircleMesh(resolution));
 }
 
 
-Mesh Circle::CreateCircleMesh(float resolution) {
+std::unique_ptr<Mesh> Circle::CreateCircleMesh(float resolution) {
 
 	std::vector<Vertex> vertices;
 	Vertex vert = {
@@ -62,7 +52,7 @@ Mesh Circle::CreateCircleMesh(float resolution) {
 	indices.push_back(1);
 	
 
-	return Mesh(vertices, indices);
+	return std::make_unique<Mesh>(vertices, indices);
 }
 glm::vec3 Circle::CalculateMassCenter() {
 	return glm::vec3(0);

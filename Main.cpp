@@ -78,6 +78,9 @@ int main() {
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 	
+	glfwWindowHint(GLFW_SAMPLES, 4);                  // Включаем MSAA сглаживание
+	
+	
 	GLFWwindow* window = glfwCreateWindow(::SCREEN_WIDTH, ::SCREEN_HEIGHT, "GameEngine2D", NULL, NULL); // Создание окна
 	if (!window)
 	{
@@ -96,10 +99,14 @@ int main() {
 	glfwSetKeyCallback        (window, keyCallback);                 // Привязываем каллбэк функцию обработки клавиш
 	glfwSetFramebufferSizeCallback(window, framebufferSizeCallback); // Привязывем каллбэк функцию обработки изменения размера окна
 	
+	
+
 	gladLoadGL();									   // Загружаем функции OpenGL через библиотеку glad
 	glViewport(0, 0, ::SCREEN_WIDTH, ::SCREEN_HEIGHT); // Передаем OpenGl размер окна
 	glEnable(GL_DEPTH_TEST);                           // Включаем использование буфера глубины
+	glEnable(GL_MULTISAMPLE);                          // Включаем MSAA
 	glClearColor(0.902, 0.894, 0.847, 1.);             // Цвет фона после очистки экрана
+	
 	
 
 	IMGUI_CHECKVERSION();
@@ -116,20 +123,7 @@ int main() {
 
 	// ===================== TEST ZONE! NO ENTER! =========================
 
-	Vertex vertices[] =
-	{   //               COORDINATES      /       TexCoord         //
-		Vertex{glm::vec3(-1.0f, -1.0f, 0), glm::vec2(0.0f, 0.0f), glm::vec3(1.,0.,0.)},
-		Vertex{glm::vec3(-1.0f,  1.0f, 0), glm::vec2(0.0f, 1.0f), glm::vec3(0.,1.,0.)},
-		Vertex{glm::vec3( 1.0f,  1.0f, 0), glm::vec2(1.0f, 1.0f), glm::vec3(0.,1, 0.)},
-		Vertex{glm::vec3( 1.0f, -1.0f, 0), glm::vec2(1.0f, 0.0f), glm::vec3(0.,0.,1.)}
-	};
-
-	// Indices for vertices order
-	GLuint indices[] =
-	{
-		0, 1, 2,
-		0, 2, 3
-	};
+	
 
 	mainCamera.aspect = (float)::SCREEN_WIDTH / (float)::SCREEN_HEIGHT;
 	mainCamera.zNear = 0.01f;
@@ -139,23 +133,17 @@ int main() {
 	{
 		Texture("planks.png", "Diff", 0, GL_RGBA, GL_UNSIGNED_BYTE)
 	};
-	Texture textures2[]
-	{
-		Texture("planks.png", "Diff", 0, GL_RGBA, GL_UNSIGNED_BYTE)
-	};
-
-	std::vector <Vertex> verts(vertices, vertices + sizeof(vertices) / sizeof(Vertex));
-	std::vector <GLuint> ind(indices, indices + sizeof(indices) / sizeof(GLuint));
 	std::vector <Texture> tex(textures, textures + sizeof(textures) / sizeof(Texture));
-	std::vector <Texture> tex2(textures2, textures2 + sizeof(textures2) / sizeof(Texture));
-
+	
 	Shader shaderProgram("Default.vert", "Default.frag");
 
-	Mesh floor(verts, ind, tex);
 
 	Circle c;
 	Circle cc;
 	static int res = 2;
+	static int oldres = 2;
+
+	cc.SetTextures(tex);
 
 	ICollisionEngine* collision = new AABB2D();
 	// ===================== TEST ZONE! NO ENTER! =========================
@@ -186,16 +174,13 @@ int main() {
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
 		// ===================== TEST ZONE! NO ENTER! =========================
-		glm::mat4 objectModel = glm::mat4(1.0f);
-		objectModel = glm::translate(objectModel, glm::vec3(0, 2., 0));
+
+		if(oldres!=res){
+			c.resolution = res;
+			c.Reshape();
+			oldres = res;
+		}
 		
-		shaderProgram.Activate();
-		shaderProgram.setMat4("eModel", objectModel);
-		floor.Draw(shaderProgram, ::mainCamera);
-
-
-		c.resolution = res;
-		c.Reshape();
 		c.Move(glm::vec3(-2, -1,0));
 		cc.Move(glm::vec3(-1, 1,0));
 		static float angle = 0;
@@ -204,14 +189,14 @@ int main() {
 		//c.Rotate(angle);
 		c.Move(glm::vec3(1, 0,0) * angle * float(0.01));
 		
-		std::cout << collision->isPossibleToCollide(c, cc) << std::endl;
+		//std::cout << collision->isPossibleToCollide(c, cc) << std::endl;
 		c.Update();
 		cc.Update();
 		c.Draw(shaderProgram, ::mainCamera);
 		cc.Draw(shaderProgram, ::mainCamera);
 		// ===================== TEST ZONE! NO ENTER! =========================
 
-		//floor.Draw(shaderProgram, ::mainCamera);
+		
 		mainCamera.processKeyboard(::pressedKeys, ::deltaTime);
 		calculateGlobalDeltaTime();
 		glfwPollEvents();        // Обработка всех событий ввода

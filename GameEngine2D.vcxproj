@@ -152,6 +152,7 @@
     <ClCompile Include="Circle.cpp" />
     <ClCompile Include="DefaultShape.cpp" />
     <ClCompile Include="GameEngine.cpp" />
+    <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="glad.c" />
     <ClCompile Include="imgui.cpp" />
     <ClCompile Include="imgui_demo.cpp" />

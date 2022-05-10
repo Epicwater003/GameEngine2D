@@ -1,6 +1,8 @@
 #ifndef GAMEOBJECT2D_H
 #define GAMEOBJECT2D_H
 
+#include <memory>
+
 #include <glm/glm.hpp>
 
 #include "Mesh.h"
@@ -17,31 +19,36 @@ class GameObject:
 {
 public:
 	GameObject() :
-		Body(new RigidBody2D()),
-		Shape(new DefaultShape())
+		Body(std::make_unique<RigidBody2D>()),
+		Shape(std::make_unique<DefaultShape>())
 	{
 
 	}
 
-	IBody*  Body  = nullptr;
-	IShape* Shape = nullptr;
+	std::unique_ptr<IBody>  Body = std::make_unique<IBody>();
+	std::unique_ptr<IShape> Shape = std::make_unique<IShape>();
+
 	virtual void Reshape(){};
 
 	virtual void Draw(Shader& s, Camera& c) { Shape->Draw(s, c)         ; }
-	virtual void Update()                   { Shape->Update()           ; }
-	virtual Mesh CreateMesh()               { return Shape->CreateMesh(); }
-	IShape* CreateShape()                   { return Shape->CreateShape(); }
+	virtual void Update()                   ;//{ Shape->Update()           ; }
+	virtual std::unique_ptr<Mesh> CreateMesh()               { return Shape->CreateMesh(); }
+	std::unique_ptr<IShape> CreateShape()                   { return Shape->CreateShape(); }
 
 	void Move(glm::vec3 position) { Body->Move(position)       ; }
 	void Rotate(float angle)      { Body->Rotate(angle)        ; }
 	virtual glm::vec3 CalculateMassCenter()    { return Body->CalculateMassCenter(); }
 
-	IShape*   GetShape()       { return Shape->GetShape()      ; }
-	Mesh      GetMesh()        { return Shape->GetMesh()       ; }
+	//IShape   GetShape()       { return Shape->GetShape()      ; }
+	Mesh     GetMesh()        { return Shape->GetMesh()       ; }
 	glm::mat4 GetModelMatrix() { return Shape->GetModelMatrix(); }
 	glm::vec3 GetColor()       { return Shape->GetColor()      ; }
 
-	IBody*    GetBody()         { return Body->GetBody(); }
+	std::vector<Vertex> GetVertices() { return Shape->GetVertices(); }
+	std::vector<GLuint> GetIndices() { return Shape->GetIndices(); }
+	std::vector<Texture> GetTextures() { return Shape->GetTextures(); }
+
+	//IBody*    GetBody()         { return Body->GetBody(); }
 	glm::vec3 GetPosition()     { return Body->GetPosition()    ; }
 	glm::vec3 GetDirection()    { return Body->GetDirection()   ; }
 	glm::vec3 GetVelocity()     { return Body->GetVelocity()    ; }
@@ -54,9 +61,13 @@ public:
 	float GetAngularAcceleration() { return Body->GetAngularAcceleration(); }
 
 	void SetShape(IShape& shape)       { Shape = shape.CreateShape(); }
-	void SetMesh(Mesh mesh)            { Shape->SetMesh(mesh)              ; }
+	void SetMesh(Mesh& mesh)            { Shape->SetMesh(mesh)              ; }
 	void SetModelMatrix(glm::mat4 mat) { Shape->SetModelMatrix(mat)        ; }
 	void SetColor(glm::vec3 col)       { Shape->SetColor(col)              ; }
+
+	void SetVertices(std::vector<Vertex>& v) { Shape->GetMesh().setVertices(v); }
+	void SetIndices(std::vector<GLuint>& i) { Shape->SetIndices(i); }
+	void SetTextures(std::vector<Texture>& t) { Shape->SetTextures(t); }
 
 	void SetBody(IBody& body)         { Body->SetBody(body)     ; }
 	void SetPosition(glm::vec3 p)     { Body->SetPosition(p)    ; }

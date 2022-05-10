@@ -2,7 +2,7 @@
 
 void DefaultShape::Draw(Shader& s, Camera & c) {
 	
-	mesh.Draw(s, c, this->model);
+	mesh->Draw(s, c, this->model);
 }
 
 void DefaultShape::Update() {
@@ -10,7 +10,7 @@ void DefaultShape::Update() {
 }
 
 
-Mesh DefaultShape::CreateMesh() {
+std::unique_ptr<Mesh> DefaultShape::CreateMesh() {
 	std::vector<Vertex> v;
 	std::vector<GLuint> i;
 	i.push_back(0);
@@ -35,5 +35,5 @@ Mesh DefaultShape::CreateMesh() {
 	};
 	v.push_back(a);
 	
-	return Mesh(v,i);
+	return std::make_unique<Mesh>(v,i);
 }

@@ -97,6 +97,9 @@
       <Filter>Interfaces\Implementation</Filter>
     </ClCompile>
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="GameObject.cpp">
+      <Filter>Исходные файлы\GameObjects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameEngine.h">

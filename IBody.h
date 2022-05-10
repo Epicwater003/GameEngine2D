@@ -7,7 +7,7 @@ class IBody
 {
 public:
 	
-	virtual IBody*    GetBody()         = 0;
+	//virtual IBody*    GetBody()         = 0;
 	virtual glm::vec3 GetPosition()     = 0;
 	virtual glm::vec3 GetDirection()    = 0;
 	virtual glm::vec3 GetVelocity()     = 0;

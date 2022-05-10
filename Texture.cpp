@@ -12,6 +12,9 @@ Texture::Texture(const char* image, const char* texType, GLenum slot, GLenum for
 	unit = slot;
 	glBindTexture(GL_TEXTURE_2D, ID);	   // Привязываем текстуру
 
+	
+
+
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);	   // Устанавливаем, как будет фильтроваться текстура
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
