@@ -19,8 +19,9 @@ public:
 	Mesh(std::vector <Vertex>& vertices, std::vector <GLuint>& indices);
 	//Mesh();
 	Mesh(const Mesh& refMesh);
-	void Draw(Shader& shader, Camera& camera, glm::mat4 &model);
-	void Draw(Shader &shader, Camera &camera);
+	void Draw(Shader& shader, Camera& camera, glm::mat4& model, glm::vec3 color, bool drawWireframed = false);
+	void Draw(Shader& shader, Camera& camera, glm::mat4 &model, bool drawWireframed = false);
+	void Draw(Shader &shader, Camera &camera, bool drawWireframed = false);
 	void AttachTexture(Texture &texture);
 	void AttachTextures(std::vector<Texture>& texture);
 	void ReloadData();
@@ -29,21 +30,9 @@ public:
 	std::vector<Texture> getTextures() { return textures; }
 	void setVertices(std::vector<Vertex>& v) { 
 		vertices = v;
-		std::cout << "Vertices: " << std::endl;
-		for (auto& vert : vertices) {
-			std::cout << vert.position.x << " ";
-		}
-		std::cout << std::endl;
-		ReloadData();
+		ReloadData(); // Требуется обновить буфер вершин
 	}
-	void setIndices(std::vector<GLuint>& i) {
-		indices = i;
-		std::cout << "Indices: " << std::endl;
-		for (auto ind : indices) {
-			std::cout << ind << " ";
-		}
-		std::cout << std::endl;
-	}
+	void setIndices(std::vector<GLuint>& i) {indices = i;} // Не требуется обновлять буфер вершин, см. реализацию Draw
 	void setTextures(std::vector<Texture>& t) { textures = t; }
 	
 protected:

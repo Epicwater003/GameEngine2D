@@ -1,3 +1,5 @@
+// not in use yet
+
 #ifndef ICOLLIDE_H
 #define ICOLLIDE_H
 

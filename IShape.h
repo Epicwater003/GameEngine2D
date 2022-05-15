@@ -15,7 +15,8 @@ class IShape
 public:
 	
 	//virtual IShape   GetShape()             = 0;
-	virtual Mesh     GetMesh()              = 0;
+
+	virtual Mesh      GetMesh()              = 0;
 	virtual glm::mat4 GetModelMatrix()       = 0;
 	virtual glm::vec3 GetColor()             = 0;
 
@@ -26,8 +27,8 @@ public:
 	virtual void SetVertices(std::vector<Vertex>& v) = 0;
 	virtual void SetIndices(std::vector<GLuint>& i) = 0;
 	virtual void SetTextures(std::vector<Texture>& t) = 0;
-	virtual std::vector<Vertex> GetVertices() = 0;
-	virtual std::vector<GLuint> GetIndices() = 0;
+	virtual std::vector<Vertex>  GetVertices() = 0;
+	virtual std::vector<GLuint>  GetIndices()  = 0;
 	virtual std::vector<Texture> GetTextures() = 0;
 		
 	virtual void SetModelMatrix(glm::mat4 mat)       = 0;

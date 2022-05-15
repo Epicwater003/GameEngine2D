@@ -4,61 +4,96 @@
 #include "ICollisionEngine.h"
 #include "IShape.h"
 #include <glm/glm.hpp>
+#include "BoundingBox.h"
+#include <glad/glad.h>
 
-struct AABoundingBox2D {
-	AABoundingBox2D(glm::vec2 min, glm::vec2 max) {
-		this->min = min;
-		this->max = max;
-		
-	}
-	glm::vec2 min = {0,1};
-	glm::vec2 max = {0,0};
-};
+
+#include "Shader.h"
+#include "Buffer.h"
+#include "Vertex.h"
 
 class AABB2D:
 	public ICollisionEngine
 {
 public:
 	
-	AABoundingBox2D GenerateBoundingBox(IShape& go) {
-		Mesh m = go.GetMesh();
-		glm::mat4 modelMat = go.GetModelMatrix();
-		std::vector<Vertex> vs = m.getVertices();
+	AxisAligned2D GenerateBoundingBox(IShape& go) {
+		model = go.GetModelMatrix();
+		std::vector<Vertex> vs = go.GetVertices();
 
-		glm::vec4 v = modelMat * glm::vec4(vs[0].position, 1);
+		glm::vec4 v = model * glm::vec4(vs[0].position, 1);
 
 		glm::vec2 max = { v.x , v.y };
 		glm::vec2 min = { v.x , v.y };
-		//std::cout << vs.size() << std::endl;
+
 		
-		for (int i = 1, s = vs.size() - 1; i < s; i++) {
-			v = modelMat * glm::vec4(vs[i].position, 1);
-			if (v.x > max.x)
+		for (int i = 1, s = vs.size(); i < s; i++) {
+			v = model * glm::vec4(vs[i].position, 1);
+
+			if (v.x >= max.x)
 				max.x = v.x;
-			if (v.x < min.x)
+			if (v.x <= min.x)
 				min.x = v.x;
-			if (v.y > max.y)
+			if (v.y >= max.y)
 				max.y = v.y;
-			if (v.y < min.y)
+			if (v.y <= min.y)
 				min.y = v.y;
 		}
-		//std::cout << min.x << "" << min.y << std::endl;
-		AABoundingBox2D a(min, max);
 
-		//std::cout << "AABB a:" << a.min.x << " " << a.min.y << " " << a.max.x << " " << a.max.y << std::endl;
+		AxisAligned2D a(min, max);
 		return a; 
 	};
-	bool isPossibleToCollide(IShape& a, IShape& b) {
-		AABoundingBox2D aabbA = GenerateBoundingBox(a);
-		AABoundingBox2D aabbB = GenerateBoundingBox(b);
-		//std::cout << "AABB A:" << aabbA.min.x << " " << aabbA.min.y << " " << aabbA.max.x << " " << aabbA.max.y << std::endl;
-		//std::cout << "AABB B:" << aabbB.min.x << " " << aabbB.min.y << " " << aabbB.max.x << " " << aabbB.max.y << std::endl;
-		bool answer = (
+	bool isCollide(IShape& a, IShape& b) {
+		AxisAligned2D aabbA = GenerateBoundingBox(a);
+		AxisAligned2D aabbB = GenerateBoundingBox(b);
+		CreateMeshA(aabbA);
+		CreateMeshB(aabbB);
+		bool answer = ( // просто сделать 2 if конструкции с return
 			(aabbA.max.x >= aabbB.min.x) && (aabbA.min.x <= aabbB.max.x) &&
 			(aabbA.max.y >= aabbB.min.y) && (aabbA.min.y <= aabbB.max.y)
 			);
+		
 		return answer;
 	};
+
+	void Draw(Shader& s, Camera& c) {
+		if(mesha)
+			mesha->Draw(s, c, model, true);
+		if(meshb)
+			meshb->Draw(s, c, model, true);
+	}
+private:
+	void CreateMeshA(AxisAligned2D a) {
+		std::vector<Vertex> vs;
+		std::vector<GLuint> inds = { 0,1,2,0,2,3 };
+		Vertex v;
+		v.position = glm::vec3(a.min.x, a.min.y, 0);
+		vs.push_back(v);
+		v.position = glm::vec3(a.max.x, a.min.y, 0);
+		vs.push_back(v);
+		v.position = glm::vec3(a.max.x, a.max.y, 0);
+		vs.push_back(v);
+		v.position = glm::vec3(a.min.x, a.max.y, 0);
+		vs.push_back(v);
+		mesha = std::make_unique<Mesh>(vs, inds);
+	}
+	void CreateMeshB(AxisAligned2D a) {
+		std::vector<Vertex> vs;
+		std::vector<GLuint> inds = { 0,1,2,0,2,3 };
+		Vertex v;
+		v.position = glm::vec3(a.min.x, a.min.y, 0);
+		vs.push_back(v);
+		v.position = glm::vec3(a.max.x, a.min.y, 0);
+		vs.push_back(v);
+		v.position = glm::vec3(a.max.x, a.max.y, 0);
+		vs.push_back(v);
+		v.position = glm::vec3(a.min.x, a.max.y, 0);
+		vs.push_back(v);
+		meshb = std::make_unique<Mesh>(vs, inds);
+	}
+	std::unique_ptr<Mesh> mesha = nullptr;
+	std::unique_ptr<Mesh> meshb = nullptr;
+	glm::mat4 model;
 };
 
 

@@ -2,7 +2,7 @@
 
 void DefaultShape::Draw(Shader& s, Camera & c) {
 	
-	mesh->Draw(s, c, this->model);
+	mesh->Draw(s, c, this->model, color);
 }
 
 void DefaultShape::Update() {

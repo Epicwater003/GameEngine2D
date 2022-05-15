@@ -165,6 +165,15 @@
     <ClInclude Include="Particle.h">
       <Filter>Файлы заголовков\GameObjects</Filter>
     </ClInclude>
+    <ClInclude Include="SAT2D.h">
+      <Filter>Interfaces\Implementation</Filter>
+    </ClInclude>
+    <ClInclude Include="IDrawable.h">
+      <Filter>Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="DrawablePrimitive.h">
+      <Filter>Файлы заголовков\Utility</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />
@@ -172,6 +181,12 @@
       <Filter>Файлы ресурсов</Filter>
     </None>
     <None Include="Default.frag">
+      <Filter>Файлы ресурсов</Filter>
+    </None>
+    <None Include="DrawAABB.vert">
+      <Filter>Файлы ресурсов</Filter>
+    </None>
+    <None Include="DrawAABB.frag">
       <Filter>Файлы ресурсов</Filter>
     </None>
   </ItemGroup>

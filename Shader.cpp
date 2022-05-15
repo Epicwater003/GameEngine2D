@@ -22,10 +22,37 @@ Shader::Shader(std::string vertexShaderFile, std::string fragmentShaderFile) {
 	glLinkProgram(ID);				    // Соединяем вместе
 	checkCompileErrors(ID, "PROGRAM");	// Ну и проверить не помешает
 
+	glDeleteShader(vertShader);
+	glDeleteShader(fragShader);
+
+}
+Shader::Shader(const char* vertexShader, const char* fragmentShader, int shit) {
+	
+	const char* vertShaderCode = (const char*)vertexShader;
+	const char* fragShaderCode = (const char*)fragmentShader;
+
+	GLuint vertShader = glCreateShader(GL_VERTEX_SHADER);	 // Создаем объект шейдера и записываем его ID-шник
+	glShaderSource(vertShader, 1, &vertShaderCode, NULL);   // Загружаем код шейдера в объект шейдера по его ID
+	glCompileShader(vertShader);                             // Компилируем
+	checkCompileErrors(vertShader, "VERTEX");		         // Проверяем
+
+	GLuint fragShader = glCreateShader(GL_FRAGMENT_SHADER);  // Бармен! Повтори
+	glShaderSource(fragShader, 1, &fragShaderCode, NULL);
+	glCompileShader(fragShader);
+	checkCompileErrors(fragShader, "FRAGMENT");
+
+	ID = glCreateProgram();             // Создаем объект шейдерной программы и записываем её ID-шник
+	glAttachShader(ID, vertShader);	    // Цепляем все кусочки шейдера к шейдерной программе
+	glAttachShader(ID, fragShader);
+	glLinkProgram(ID);				    // Соединяем вместе
+	checkCompileErrors(ID, "PROGRAM");	// Ну и проверить не помешает
+
+	glDeleteShader(vertShader);
+	glDeleteShader(fragShader);
 }
 
 Shader::~Shader() {
-	//glDeleteProgram(ID); // Ха-ха-ха! RAII в деле, только надо быть осторожным с областями видимости.
+	glDeleteProgram(ID);
 }
 void Shader::Activate(){
 	glUseProgram(ID);	 // Переключает рисование на этот шейдер

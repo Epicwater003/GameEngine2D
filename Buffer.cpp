@@ -37,8 +37,8 @@ VAO::VAO()
 }
 
 VAO::~VAO() {
-	glDeleteVertexArrays(1, &ID);	 // ХАХАХАХ, спасибо тупому следованию RAII за 2 часа поиска ошибки)))))) TODO: Переписать так, чтобы при копировании объекта буфер не уничтожался 
-}									 // Теперь все должно работать, если я доконца не доломал))
+	glDeleteVertexArrays(1, &ID);	 
+}									 
 
 void VAO::LinkAttrib(VBO& VBO, GLuint layout, GLuint numComponents, GLenum type, GLsizeiptr stride, void* offset)
 {

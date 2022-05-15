@@ -1,4 +1,4 @@
-#ifndef SHADER_H
+п»ї#ifndef SHADER_H
 #define SHADER_H
 
 #include <iostream>
@@ -14,12 +14,13 @@ class Shader
 {
 public:
 	
-    Shader(std::string vertexShaderFile, std::string fragmentShaderFile);
-	~Shader();
+    explicit Shader(std::string vertexShaderFile, std::string fragmentShaderFile);
+    explicit Shader(const char* vertexShader, const char* fragmentShader, int shit); // TODO: РСЃРїСЂР°РІРёС‚СЊ РґСѓСЂР°С†РєРёР№ string РєР°СЃС‚РёС‚СЃСЏ Рє const char* РґР°Р¶Рµ РїСЂРё explicit (в•ЇВ°в–ЎВ°пј‰в•Їпёµ в”»в”Ѓв”»
+    ~Shader();
 public:
-    void Activate();                                                                   // Переключает рисование на этот шейдер
-    void setBool (const std::string& name, bool value)                         const;  // Устанавливает uniform переменную типа bool шейдерной программы по имени
-    void setInt  (const std::string& name, int value)                          const;  // А что, непонятно что делает?
+    void Activate();                                                                   // РџРµСЂРµРєР»СЋС‡Р°РµС‚ СЂРёСЃРѕРІР°РЅРёРµ РЅР° СЌС‚РѕС‚ С€РµР№РґРµСЂ
+    void setBool (const std::string& name, bool value)                         const;  // РЈСЃС‚Р°РЅР°РІР»РёРІР°РµС‚ uniform РїРµСЂРµРјРµРЅРЅСѓСЋ С‚РёРїР° bool С€РµР№РґРµСЂРЅРѕР№ РїСЂРѕРіСЂР°РјРјС‹ РїРѕ РёРјРµРЅРё
+    void setInt  (const std::string& name, int value)                          const;  // Рђ С‡С‚Рѕ, РЅРµРїРѕРЅСЏС‚РЅРѕ С‡С‚Рѕ РґРµР»Р°РµС‚?
     void setFloat(const std::string& name, float value)                        const;
     void setVec2 (const std::string& name, const glm::vec2& value)             const;
     void setVec2 (const std::string& name, float x, float y)                   const;

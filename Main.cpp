@@ -41,7 +41,9 @@
 #include "Circle.h"
 #include "ICollisionEngine.h"
 #include "AABB2D.h"
+#include "SAT2D.h"
 #include "GameEngine.h"
+#include "DrawablePrimitive.h"
 
 
 void calculateGlobalDeltaTime();
@@ -103,7 +105,7 @@ int main() {
 
 	gladLoadGL();									   // Загружаем функции OpenGL через библиотеку glad
 	glViewport(0, 0, ::SCREEN_WIDTH, ::SCREEN_HEIGHT); // Передаем OpenGl размер окна
-	glEnable(GL_DEPTH_TEST);                           // Включаем использование буфера глубины
+	//glEnable(GL_DEPTH_TEST);                           // Включаем использование буфера глубины
 	glEnable(GL_MULTISAMPLE);                          // Включаем MSAA
 	glClearColor(0.902, 0.894, 0.847, 1.);             // Цвет фона после очистки экрана
 	
@@ -136,16 +138,23 @@ int main() {
 	std::vector <Texture> tex(textures, textures + sizeof(textures) / sizeof(Texture));
 	
 	Shader shaderProgram("Default.vert", "Default.frag");
-
+	Shader AABBShader("DrawAABB.vert", "DrawAABB.frag");
+	
+	DrawablePrimitive::Line l(glm::vec3(0., 0., 0.), glm::vec3(0.5, 0.5, 0.));
 
 	Circle c;
 	Circle cc;
 	static int res = 2;
-	static int oldres = 2;
-
+	static int oldres = 3;
+	static float arrowUp = 0;
+	static float arrowRight = 0;
+	static bool isCollide = 0;
 	cc.SetTextures(tex);
+	//c.SetTextures(tex);
 
-	ICollisionEngine* collision = new AABB2D();
+	glm::mat4 m(1.);
+	AABB2D* collision = new AABB2D();
+	SAT2D* collision2 = new SAT2D();
 	// ===================== TEST ZONE! NO ENTER! =========================
 
 	while (!glfwWindowShouldClose(window)){	                // Игровой цикл
@@ -168,32 +177,56 @@ int main() {
 		stat += " " + std::to_string(mainCamera.position.y);
 		stat += " " + std::to_string(mainCamera.position.z);
 		ImGui::Text(stat.c_str());
+		ImGui::Text((std::string("Is collide: ") + std::to_string(isCollide)).c_str());
 		ImGui::End();
 		ImGui::EndFrame();
 		ImGui::Render();         // Рисуем интерфейс с помощью imgui
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
 		// ===================== TEST ZONE! NO ENTER! =========================
+		if (::pressedKeys[GLFW_KEY_LEFT]) {
+			arrowRight -= 0.02;
+		}
+		if (::pressedKeys[GLFW_KEY_RIGHT]) {
+			arrowRight += 0.02;
+		}
+		if (::pressedKeys[GLFW_KEY_UP]) {
+			arrowUp += 0.02;
+		}
+		if (::pressedKeys[GLFW_KEY_DOWN]) {
+			arrowUp -= 0.02;
+		}
+
 
 		if(oldres!=res){
+			cc.resolution = res;
 			c.resolution = res;
+			cc.Reshape();
 			c.Reshape();
 			oldres = res;
 		}
 		
-		c.Move(glm::vec3(-2, -1,0));
-		cc.Move(glm::vec3(-1, 1,0));
+		//c.Move(glm::vec3(-2, -1,0));
+		cc.Move(glm::vec3(1.5, 0,0));
 		static float angle = 0;
 		angle += 0.3;
+		m = glm::translate(m, glm::vec3(0.001, 0., 0.));
+		cc.Rotate(-angle);
+		c.Rotate(angle);
+		c.Move(glm::vec3(arrowRight, arrowUp,0));
 		
-		//c.Rotate(angle);
-		c.Move(glm::vec3(1, 0,0) * angle * float(0.01));
+		//l.Draw();
 		
-		//std::cout << collision->isPossibleToCollide(c, cc) << std::endl;
 		c.Update();
 		cc.Update();
 		c.Draw(shaderProgram, ::mainCamera);
 		cc.Draw(shaderProgram, ::mainCamera);
+
+		//l.Draw(::mainCamera.getPerspProjectionMatrix() * ::mainCamera.getViewMatrix() * c.GetModelMatrix());
+		//isCollide = collision2->isCollide(c, cc, ::mainCamera.getPerspProjectionMatrix() * ::mainCamera.getViewMatrix());
+		std::cout << collision->isCollide(c, cc) << std::endl;
+		collision->Draw(AABBShader, ::mainCamera);
+		
 		// ===================== TEST ZONE! NO ENTER! =========================
 
 		
@@ -219,6 +252,7 @@ void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mode
 			::pressedKeys[key] = true;
 		else if (action == GLFW_RELEASE)
 			::pressedKeys[key] = false;
+		
 		if (key == GLFW_KEY_P && action == GLFW_PRESS) {
 			::imGuiShowDemoWindow = !::imGuiShowDemoWindow;
 		}

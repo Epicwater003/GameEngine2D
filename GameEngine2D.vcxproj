@@ -176,18 +176,21 @@
     <ClInclude Include="Buffer.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Circle.h" />
+    <ClInclude Include="DrawablePrimitive.h" />
     <ClInclude Include="GameEngine.h" />
     <ClInclude Include="DefaultShape.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="IBody.h" />
     <ClInclude Include="ICollide.h" />
     <ClInclude Include="ICollisionEngine.h" />
+    <ClInclude Include="IDrawable.h" />
     <ClInclude Include="IShape.h" />
     <ClInclude Include="IResponseEngine.h" />
     <ClInclude Include="Particle.h" />
     <ClInclude Include="RigidBody2D.h" />
     <ClInclude Include="Line.h" />
     <ClInclude Include="Mesh.h" />
+    <ClInclude Include="SAT2D.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="Square.h" />
     <ClInclude Include="Texture.h" />
@@ -197,6 +200,8 @@
     <None Include="ClassDiagram.cd" />
     <None Include="Default.frag" />
     <None Include="Default.vert" />
+    <None Include="DrawAABB.frag" />
+    <None Include="DrawAABB.vert" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="planks.png" />

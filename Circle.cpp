@@ -28,8 +28,8 @@ std::unique_ptr<Mesh> Circle::CreateCircleMesh(float resolution) {
 
 	vertices.push_back(vert);
 	for (float i = 0; i < 359; i+=180/resolution) {
-		float x = glm::cos(glm::radians(i));
-		float y = glm::sin(glm::radians(i));
+		float x = glm::cos(glm::radians(i))*radius/2.;
+		float y = glm::sin(glm::radians(i))*radius/2.;
 		float u = 0.5 + (x) / (2 * radius);
 		float v = 0.5 + (y) / (2 * radius);
 		vert = {
