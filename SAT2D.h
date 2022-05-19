@@ -2,171 +2,229 @@
 #define SAT2D_H
 
 #include <glm/glm.hpp>
+#include "ICollisionEngine.h"
 #include "IShape.h"
 #include "DrawablePrimitive.h"
+
+struct Projection {
+	float min = FLT_MAX;
+	float max = -FLT_MAX;
+};
+
+struct ProjectionDetails {
+	Projection projection = {FLT_MAX, -FLT_MAX};
+	glm::vec2 minPoint = {0.f, 0.f};
+	glm::vec2 maxPoint = {0.f, 0.f};
+	glm::vec2 axis = { 0.f,0.f };
+	float penetration = 0.;
+};
+
+
 
 class SAT2D
 	
 {
-	DrawablePrimitive::Line l;
+
 public:
-	
 
-	bool isCollide(IShape& a, IShape& b, glm::mat4 m) {
-		auto indicesA = a.GetIndices();
-		auto indicesB = b.GetIndices();
-		auto verticesA = a.GetVertices();
-		auto verticesB = b.GetVertices();
+	CollisionProperties2D isCollide(IShape& a, IShape& b, glm::mat4 m) {
+		CollisionProperties2D collisionProperties = { false, FLT_MAX };
 		
-		glm::vec3 firstPoint;
-		glm::vec3 firstPointM;
-		glm::vec3 secondPoint;
-		glm::vec3 secondPointM;
-		glm::vec3 line;
-		glm::vec2 normToLine;
-		glm::vec3 lineM;
-		glm::vec2 normToLineM;
-		bool answer = 1;
-		for (int i = 1, s = indicesA.size(); i < s; i++) {
-			firstPoint = verticesA[indicesA[i - 1]].position;
-			firstPointM = glm::vec3(a.GetModelMatrix() * glm::vec4(firstPoint, 1));
-			secondPoint = verticesA[indicesA[i]].position;
-			secondPointM = glm::vec3(a.GetModelMatrix() * glm::vec4(secondPoint, 1));
+		auto verticesA = a.GetVertices();
+		auto modelMatA = a.GetModelMatrix();
 
-			line = firstPoint - secondPoint;
-			normToLine = GetNormalToVector(glm::vec2(line));
-			lineM = firstPointM - secondPointM;
-			normToLineM = GetNormalToVector(glm::vec2(lineM));
-			
-			// В алгоритме SAT используются нормали к граням, но для чего - не понятно
-			/*if (ProjectionOverlaping(normToLineM, a, b)) {
-				l.setPoints(firstPointM, secondPointM);
-				l.setColor(glm::vec3(0., 1., 0.));
-				l.Draw(m);
-			}
-
-			if (!ProjectionOverlaping(normToLineM, a, b))
-				answer = 0;*/
-
-			// При использовании самих граней как разделяющих осей, все работает нормально
-			if (ProjectionOverlaping(glm::vec2(lineM.x, lineM.y), a, b)) {
-				l.setPoints(firstPointM, secondPointM);
-				l.setColor(glm::vec3(0., 1., 0.));
-				l.Draw(m);
-			}
-
-			if (!ProjectionOverlaping(glm::vec2(lineM.x, lineM.y), a, b))
-				answer = 0;
-
+		std::vector<glm::vec2> worldVerticesA;
+		for (auto& v : verticesA) {
+			worldVerticesA.push_back(glm::vec2(modelMatA * glm::vec4(v.position,1)));
 		}
-		for (int i = 1, s = indicesB.size(); i < s; i++) {
 
+		auto verticesB = b.GetVertices();
+		auto modelMatB = b.GetModelMatrix();
 
-
-			firstPoint = verticesB[indicesB[i - 1]].position;
-			firstPointM = glm::vec3(b.GetModelMatrix() * glm::vec4(firstPoint, 1));
-			secondPoint = verticesB[indicesB[i]].position;
-			secondPointM = glm::vec3(b.GetModelMatrix() * glm::vec4(secondPoint, 1));
-
-			line = firstPoint - secondPoint;
-			normToLine = GetNormalToVector(glm::vec2(line));
-			lineM = firstPointM - secondPointM;
-			normToLineM = GetNormalToVector(glm::vec2(lineM));
-
-			/*if (ProjectionOverlaping(normToLineM, a, b)) {
-				l.setPoints(firstPoint, secondPoint);
-				l.setColor(glm::vec3(1., 0., 0.));
-				l.Draw(m * b.GetModelMatrix());
-			}
-
-
-			if (!ProjectionOverlaping(normToLineM, a, b))
-				answer = 0;*/
-			
-			if(ProjectionOverlaping(glm::vec2(lineM.x, lineM.y), a, b)){
-				l.setPoints(firstPoint, secondPoint);
-				l.setColor(glm::vec3(1., 0., 0.));
-				l.Draw(m * b.GetModelMatrix());
-			}
-
-
-			if (!ProjectionOverlaping(glm::vec2(lineM.x, lineM.y), a, b))
-				answer = 0;
-
+		std::vector<glm::vec2> worldVerticesB;
+		for (auto& v : verticesB) {
+			worldVerticesB.push_back(glm::vec2(modelMatB * glm::vec4(v.position, 1)));
 		}
-		return answer;
+
+		ProjectionDetails minProjDetA = GetMinimalPenetration(worldVerticesA, modelMatA, worldVerticesB, modelMatB, true, m,glm::vec3(0.,1.,0.));
+		ProjectionDetails minProjDetB = GetMinimalPenetration(worldVerticesB, modelMatB, worldVerticesA, modelMatA, true, m, glm::vec3(1., 0., 0.));
+
+		if (!minProjDetA.penetration || !minProjDetB.penetration) {
+			return CollisionProperties2D();
+		}
+
+
+		minProjDetA.axis = glm::normalize(minProjDetA.axis);
+		minProjDetB.axis = glm::normalize(minProjDetB.axis);
+
+		collisionProperties.isCollide = 1;
+
+		if (minProjDetA.penetration < minProjDetB.penetration) {
+			collisionProperties.penetration = minProjDetA.penetration;
+			collisionProperties.Normal = glm::normalize(minProjDetA.axis);
+
+			l.setColor(glm::vec3(0., 1., 1.));
+			l.setPoints(glm::vec3(0.), -glm::vec3(collisionProperties.Normal, 0) * collisionProperties.penetration);
+			l.Draw(m * glm::translate(glm::mat4(1), glm::vec3(minProjDetA.maxPoint, 0)));
+
+			l.setPoints(glm::vec3(minProjDetA.minPoint, 0), glm::vec3(minProjDetA.maxPoint, 0));
+			l.setColor(glm::vec3(0., 1., 0.));
+			l.Draw(m);
+		}
+		else if(minProjDetB.penetration < minProjDetA.penetration)
+		{
+			collisionProperties.penetration = minProjDetB.penetration;
+			collisionProperties.Normal = glm::normalize(minProjDetB.axis);
+
+			l.setColor(glm::vec3(0., 1., 1.));
+			l.setPoints(glm::vec3(0.), -glm::vec3(collisionProperties.Normal, 0) * collisionProperties.penetration);
+			l.Draw(m * glm::translate(glm::mat4(1), glm::vec3(minProjDetB.maxPoint, 0)));
+
+			l.setPoints(glm::vec3(minProjDetB.minPoint, 0), glm::vec3(minProjDetB.maxPoint, 0));
+			l.setColor(glm::vec3(1., 0., 0.));
+			l.Draw(m);
+		}
+		else {
+
+			collisionProperties.penetration = minProjDetB.penetration;
+			collisionProperties.Normal = glm::normalize(minProjDetB.axis);
+
+			l.setColor(glm::vec3(1., 1., 1.));
+			l.setPoints(glm::vec3(0.), -glm::vec3(collisionProperties.Normal, 0) * collisionProperties.penetration);
+			l.Draw(m * glm::translate(glm::mat4(1), glm::vec3(minProjDetB.maxPoint, 0)));
+
+			l.setPoints(glm::vec3(minProjDetB.minPoint, 0), glm::vec3(minProjDetB.maxPoint, 0));
+			l.setColor(glm::vec3(.5, .5, .5));
+			l.Draw(m);
+		}
+
+		return collisionProperties;
+
 
 
 	}
 	glm::vec2 GetNormalToVector(glm::vec2 line) {
-		return glm::vec2(-line.y, line.x);
+		return glm::vec2(line.y, -line.x);
 	}
-	glm::vec2 GetPointProjection(glm::vec2 point, glm::vec2 line) {
-		glm::vec2 projection;
-		float t = glm::dot(point, line) / glm::length(line); // Координата точки на прямой line
-		projection.x = t;// *line.x;
-		projection.y = t;// *line.y;
-		return projection;
+	float GetPointProjection(glm::vec2 point, glm::vec2 line) {
+		return glm::dot(point, line); // Координата точки на прямой line
 	}
-	glm::vec2 GetAxisProjection(glm::vec2 line, IShape& shape){ // Переписать IShape на vector<vertex> и glm::mat4
-		glm::vec2 proj = { FLT_MAX, -FLT_MAX };
+	ProjectionDetails GetAxisProjection(glm::vec2& line, IShape& shape){ // Переписать IShape на vector<vertex> и glm::mat4
+		Projection proj = { FLT_MAX, -FLT_MAX };
+		ProjectionDetails projDet;
 		auto vs = shape.GetVertices();
 		auto model = shape.GetModelMatrix();
 		for (auto& v : vs) {
-			glm::vec4 point = model * glm::vec4(v.position, 1);
-			glm::vec2 projection = GetPointProjection(glm::vec2(point.x, point.y), line);
-			float dist = projection.x;// * projection.x;
-			/*if (projection.x < 0)
-				dist = -dist;*/
-			if (proj.x > dist)
-				proj.x = dist;
-			if (proj.y < dist)
-				proj.y = dist;
-		}
-		return proj;
-	}
+			glm::vec2 point = glm::vec2(model * glm::vec4(v.position, 1));
+			float projection = GetPointProjection(point, line);
 
-	float ProjectionOverlaping(glm::vec2 line, IShape& a, IShape& b) {// Переписать IShape на vector<vertex> и glm::mat4
-		glm::vec2 projA = GetAxisProjection(line, a);
-		glm::vec2 projB = GetAxisProjection(line, b);
-		
-		if (projA.y < projB.x || projB.y < projA.x)
-			return false;
-		return true;
-	}
-
-	float checkCollision(IShape& a, IShape& b) {
-		auto indices = a.GetIndices();
-		auto vertices = a.GetVertices();
-
-		float answer = 0;
-
-		glm::vec3 firstPoint;
-		glm::vec3 firstPointM;
-		glm::vec3 secondPoint;
-		glm::vec3 secondPointM;
-		glm::vec3 line;
-		glm::vec3 lineM;
-
-		
-		for (int i = 1, s = indices.size(); i < s; i++) {
-			firstPoint = vertices[indices[i - 1]].position;
-			firstPointM = glm::vec3(a.GetModelMatrix() * glm::vec4(firstPoint, 1));
-			secondPoint = vertices[indices[i]].position;
-			secondPointM = glm::vec3(a.GetModelMatrix() * glm::vec4(secondPoint, 1));
-
-			line = firstPoint - secondPoint;
-			lineM = firstPointM - secondPointM;
-
-			answer = ProjectionOverlaping(glm::vec2(line.x, line.y), a, b);
-
-			if (answer){
-				return answer;
+			if (projection <= proj.min){
+				proj.min = projection;
+				projDet.minPoint = { point.x, point.y};
 			}
-
+			if (projection >= proj.max){
+				proj.max = projection;
+				projDet.maxPoint = { point.x, point.y};
+			}
 		}
-		return answer;
+		projDet.projection = proj;
+		return projDet;
 	}
+	ProjectionDetails GetAxisProjection(glm::vec2& line, std::vector<glm::vec2> vertices, glm::mat4 modelMat) { // Переписать IShape на vector<vertex> и glm::mat4
+		Projection proj = { FLT_MAX, -FLT_MAX };
+		ProjectionDetails projDet;
+		
+		for (auto& v : vertices) {
+			float projection = GetPointProjection(v, line);
+
+			if (projection <= proj.min) {
+				proj.min = projection;
+				projDet.minPoint = { v.x, v.y };
+			}
+			if (projection >= proj.max) {
+				proj.max = projection;
+				projDet.maxPoint = { v.x, v.y };
+			}
+		}
+		projDet.projection = proj;
+		return projDet;
+	}
+
+	ProjectionDetails GetProjectionDetails(glm::vec2 line, IShape& a, IShape& b) {// Переписать IShape на vector<vertex> и glm::mat4
+		ProjectionDetails projDetA = GetAxisProjection(line, a);
+		ProjectionDetails projDetB = GetAxisProjection(line, b);
+		ProjectionDetails outDetails = { Projection{0, 0} };
+
+		if (projDetA.projection.max < projDetB.projection.min || projDetB.projection.max < projDetA.projection.min)
+			return outDetails;
+
+		outDetails.projection = { projDetA.projection.min, projDetB.projection.max };
+		outDetails.minPoint = projDetA.minPoint;
+		outDetails.maxPoint = projDetB.maxPoint;
+
+		return outDetails;
+	}
+	ProjectionDetails GetProjectionDetails(glm::vec2 line, std::vector<glm::vec2> verticesA, glm::mat4 modelMatA, std::vector<glm::vec2> verticesB, glm::mat4 modelMatB) {
+		ProjectionDetails projDetA = GetAxisProjection(line, verticesA, modelMatA);
+		ProjectionDetails projDetB = GetAxisProjection(line, verticesB, modelMatB);
+		ProjectionDetails outDetails = { Projection{0, 0} };
+
+		if (projDetA.projection.max < projDetB.projection.min || projDetB.projection.max < projDetA.projection.min)
+			return outDetails;
+
+		outDetails.projection = { projDetA.projection.min, projDetB.projection.max };
+		outDetails.minPoint = projDetA.minPoint;
+		outDetails.maxPoint = projDetB.maxPoint;
+
+		return outDetails;
+	}
+	ProjectionDetails GetMinimalPenetration(std::vector<glm::vec2> verticesA, glm::mat4 modelMatA, std::vector<glm::vec2> verticesB, glm::mat4 modelMatB, bool debugDraw = false, glm::mat4 toWorldMat = glm::mat4(1), glm::vec3 color = {1,0,0}) {
+
+		ProjectionDetails outProjDet;
+		outProjDet.penetration = FLT_MAX;
+
+		for (int i = 0, s = verticesA.size(); i < s; i++) {
+			glm::vec2 firstPoint = verticesA[i];
+			glm::vec2 secondPoint = verticesA[(i + 1) % s];
+
+			glm::vec2 line = secondPoint - firstPoint;
+			glm::vec2 lineCenter = (secondPoint + firstPoint) / 2.f;
+
+			glm::vec2 axis = GetNormalToVector(line);
+
+			ProjectionDetails projDet = GetProjectionDetails(axis, verticesA, modelMatA, verticesB, modelMatB);
+
+			float penetration = projDet.projection.max - projDet.projection.min;
+
+			if (penetration <= 0.0) {
+				return ProjectionDetails();
+			}
+			penetration /= glm::length(axis);
+
+			if(debugDraw){
+				l.setPoints(firstPoint, secondPoint);
+				l.setColor(color);
+				l.Draw(toWorldMat);
+
+				l.setPoints(glm::vec3(0.), 0.1f * glm::vec3(axis, 0) / glm::length(axis));
+				l.setColor(color);
+				l.Draw(toWorldMat * glm::translate(glm::mat4(1), glm::vec3(lineCenter, 0.f)));
+			}
+			if (penetration < outProjDet.penetration) {
+				outProjDet.projection = projDet.projection; 
+				outProjDet.minPoint = projDet.minPoint;
+				outProjDet.maxPoint = projDet.maxPoint;
+				outProjDet.penetration = penetration;
+				outProjDet.axis = axis;
+			}
+		}
+		return outProjDet;
+	}
+
+protected:
+
+private:
+	DrawablePrimitive::Line l;
 
 };
 

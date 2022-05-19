@@ -144,11 +144,29 @@ int main() {
 
 	Circle c;
 	Circle cc;
+	Circle ccc0;
+	Circle ccc1;
+	Circle ccc2;
+	Circle ccc3;
+
+	std::vector<GameObject> gameObjects;
+
+	gameObjects.push_back(std::move(ccc0));
+	gameObjects.push_back(std::move(ccc1));
+	gameObjects.push_back(std::move(ccc2));
+	gameObjects.push_back(std::move(ccc3));
+	/*gameObjects.emplace_back(ccc0);
+	gameObjects.emplace_back(ccc1);
+	gameObjects.emplace_back(ccc2);
+	gameObjects.emplace_back(ccc3);*/
+
+
 	static int res = 2;
-	static int oldres = 3;
+	static int oldres = -1;
 	static float arrowUp = 0;
-	static float arrowRight = 0;
-	static bool isCollide = 0;
+	static float arrowRight = 3;
+	static float collide = 0;
+	static float isCollide = 0;
 	cc.SetTextures(tex);
 	//c.SetTextures(tex);
 
@@ -177,7 +195,7 @@ int main() {
 		stat += " " + std::to_string(mainCamera.position.y);
 		stat += " " + std::to_string(mainCamera.position.z);
 		ImGui::Text(stat.c_str());
-		ImGui::Text((std::string("Is collide: ") + std::to_string(isCollide)).c_str());
+		ImGui::Text((std::string("Is collide: ") + std::to_string(collide)).c_str());
 		ImGui::End();
 		ImGui::EndFrame();
 		ImGui::Render();         // Рисуем интерфейс с помощью imgui
@@ -185,16 +203,16 @@ int main() {
 
 		// ===================== TEST ZONE! NO ENTER! =========================
 		if (::pressedKeys[GLFW_KEY_LEFT]) {
-			arrowRight -= 0.02;
+			arrowRight -= 0.01;
 		}
 		if (::pressedKeys[GLFW_KEY_RIGHT]) {
-			arrowRight += 0.02;
+			arrowRight += 0.01;
 		}
 		if (::pressedKeys[GLFW_KEY_UP]) {
-			arrowUp += 0.02;
+			arrowUp += 0.01;
 		}
 		if (::pressedKeys[GLFW_KEY_DOWN]) {
-			arrowUp -= 0.02;
+			arrowUp -= 0.01;
 		}
 
 
@@ -205,8 +223,11 @@ int main() {
 			c.Reshape();
 			oldres = res;
 		}
+
+		l.setPoints(glm::vec3(-4, 4, 0), glm::vec3(4, 4, 0));
+		l.Draw(::mainCamera.getPerspProjectionMatrix() * ::mainCamera.getViewMatrix());
 		
-		//c.Move(glm::vec3(-2, -1,0));
+
 		cc.Move(glm::vec3(1.5, 0,0));
 		static float angle = 0;
 		angle += 0.3;
@@ -214,18 +235,36 @@ int main() {
 		cc.Rotate(-angle);
 		c.Rotate(angle);
 		c.Move(glm::vec3(arrowRight, arrowUp,0));
-		
-		//l.Draw();
+
 		
 		c.Update();
 		cc.Update();
 		c.Draw(shaderProgram, ::mainCamera);
 		cc.Draw(shaderProgram, ::mainCamera);
+		collide = 0;
+		CollisionProperties2D CollisionProps = {false, 0};
+		for (int i = 0, s = gameObjects.size(); i < s;i++) {
+			if (i % 2)
+				gameObjects[i].Rotate(-angle);
+			gameObjects[i].Move(glm::vec3(2 * i, 2 * i, 0));
 
-		//l.Draw(::mainCamera.getPerspProjectionMatrix() * ::mainCamera.getViewMatrix() * c.GetModelMatrix());
-		//isCollide = collision2->isCollide(c, cc, ::mainCamera.getPerspProjectionMatrix() * ::mainCamera.getViewMatrix());
-		std::cout << collision->isCollide(c, cc) << std::endl;
-		collision->Draw(AABBShader, ::mainCamera);
+			gameObjects[i].Update();
+			gameObjects[i].Draw(shaderProgram, ::mainCamera);
+			CollisionProps = collision2->isCollide(c, gameObjects[i], ::mainCamera.getPerspProjectionMatrix() * ::mainCamera.getViewMatrix());
+			if (CollisionProps.isCollide){
+				collide = CollisionProps.penetration;
+
+			}
+			
+		}
+
+		
+		CollisionProps = collision2->isCollide(c, cc, ::mainCamera.getPerspProjectionMatrix() * ::mainCamera.getViewMatrix());
+		if (CollisionProps.isCollide){
+			collide = CollisionProps.penetration;
+
+		}
+	
 		
 		// ===================== TEST ZONE! NO ENTER! =========================
 

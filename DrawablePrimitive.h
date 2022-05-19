@@ -103,8 +103,8 @@ public:
         startPoint = start;
         endPoint = end;
         vertices = {
-             start.x, start.y, start.z,
-             end.x, end.y, end.z,
+             startPoint.x, startPoint.y, startPoint.z,
+             endPoint.x, endPoint.y, endPoint.z,
         };
 
         Vao->Bind();
@@ -113,7 +113,21 @@ public:
 
         Vao->Unbind();
         Vbo.Unbind();
+    }
+    void setPoints(glm::vec2 start, glm::vec2 end) {
+        startPoint = glm::vec3(start,0.f);
+        endPoint = glm::vec3(end,0.f);
+        vertices = {
+             startPoint.x, startPoint.y, startPoint.z,
+             endPoint.x, endPoint.y, endPoint.z,
+        };
 
+        Vao->Bind();
+        VBO Vbo(vertices.data(), sizeof(vertices));
+        Vao->LinkAttrib(Vbo, 0, 3, GL_FLOAT, 3 * sizeof(float), (void*)0);
+
+        Vao->Unbind();
+        Vbo.Unbind();
     }
 
     void Draw() {

@@ -21,10 +21,8 @@ public:
 	GameObject() :
 		Body(std::make_unique<RigidBody2D>()),
 		Shape(std::make_unique<DefaultShape>())
-	{
-
-	}
-
+	{}
+	
 	std::unique_ptr<IBody>  Body = std::make_unique<IBody>();
 	std::unique_ptr<IShape> Shape = std::make_unique<IShape>();
 

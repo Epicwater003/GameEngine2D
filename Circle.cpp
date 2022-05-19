@@ -18,16 +18,11 @@ Circle::Circle(std::vector<Texture>& textures, float radius, float resolution):
 
 
 std::unique_ptr<Mesh> Circle::CreateCircleMesh(float resolution) {
-
+	// TODO: Переписать генератор меша на примерно такой https://stackoverflow.com/questions/50606756/creating-a-2d-circular-mesh-in-unity
 	std::vector<Vertex> vertices;
-	Vertex vert = {
-		glm::vec3(0.,0.,0.),
-		glm::vec2(0.5,0.5) ,
-		this->Shape->GetColor()
-	};
+	Vertex vert;
 
-	vertices.push_back(vert);
-	for (float i = 0; i < 359; i+=180/resolution) {
+	for (float i = 0; i < 360; i+=180/resolution) {
 		float x = glm::cos(glm::radians(i))*radius/2.;
 		float y = glm::sin(glm::radians(i))*radius/2.;
 		float u = 0.5 + (x) / (2 * radius);
@@ -47,9 +42,9 @@ std::unique_ptr<Mesh> Circle::CreateCircleMesh(float resolution) {
 		indices.push_back(i);
 		indices.push_back(i+1);
 	}
-	indices.push_back(0);
-	indices.push_back(vertices.size() - 1);
-	indices.push_back(1);
+	/*indices.push_back(0);
+	indices.push_back(vertices.size()-1);
+	indices.push_back(vertices.size());*/
 	
 
 	return std::make_unique<Mesh>(vertices, indices);
