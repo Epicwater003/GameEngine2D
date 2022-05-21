@@ -1,6 +1,6 @@
 #include "GameObject.h"
 
-void GameObject::Update() {
+void GameObject::Update() { //TODO: Refactor
 	float     angle    = Body->GetAngle();
 	glm::vec3 position = Body->GetPosition();
 

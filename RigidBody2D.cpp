@@ -1,7 +1,11 @@
 #include "RigidBody2D.h"
 
-void RigidBody2D::Move(glm::vec3 position) {
+void RigidBody2D::MoveToPosition(glm::vec3 position) {
 	this->position = { position.x,position.y };
+}
+void RigidBody2D::Move(glm::vec3 direction) {
+	this->position.x += direction.x;
+	this->position.y += direction.y;
 }
 
 void RigidBody2D::Rotate(float angle) {

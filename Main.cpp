@@ -162,12 +162,15 @@ int main() {
 
 
 	static int res = 2;
+	static float rad = 1;
 	static int oldres = -1;
+	static float oldrad = 1;
 	static float arrowUp = 0;
-	static float arrowRight = 3;
+	static float arrowRight = 0;
 	static float collide = 0;
 	static float isCollide = 0;
 	cc.SetTextures(tex);
+	cc.MoveToPosition(glm::vec3(1.5, 0, 0));
 	//c.SetTextures(tex);
 
 	glm::mat4 m(1.);
@@ -178,30 +181,9 @@ int main() {
 	while (!glfwWindowShouldClose(window)){	                // Игровой цикл
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // Очищаем экран
 		
-		ImGui_ImplOpenGL3_NewFrame();
-		ImGui_ImplGlfw_NewFrame();
-		ImGui::NewFrame();
-		
-		if(::imGuiShowDemoWindow)
-			ImGui::ShowDemoWindow(&::imGuiShowDemoWindow);            // Показать окно с демонстрацией возможностей imgui
-
-		ImGui::Begin("Hello, world!");                                // Создать окно с названием "Hello, world!"
-		ImGui::Checkbox("Show demo window?", &::imGuiShowDemoWindow); // Здесь пишем логику окна
-		ImGui::SliderInt("resolution of circle", &res, 2, 70);
-		ImGui::End();                                                 // Завершить обработку окна с названием "Hello, world!"
-					
-		ImGui::Begin("Camera stats");
-		std::string stat = std::to_string(mainCamera.position.x);
-		stat += " " + std::to_string(mainCamera.position.y);
-		stat += " " + std::to_string(mainCamera.position.z);
-		ImGui::Text(stat.c_str());
-		ImGui::Text((std::string("Is collide: ") + std::to_string(collide)).c_str());
-		ImGui::End();
-		ImGui::EndFrame();
-		ImGui::Render();         // Рисуем интерфейс с помощью imgui
-		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-
 		// ===================== TEST ZONE! NO ENTER! =========================
+		arrowRight = 0;
+		arrowUp = 0;
 		if (::pressedKeys[GLFW_KEY_LEFT]) {
 			arrowRight -= 0.01;
 		}
@@ -216,19 +198,21 @@ int main() {
 		}
 
 
-		if(oldres!=res){
+		if(oldres!=res || oldrad !=rad){
 			cc.resolution = res;
 			c.resolution = res;
+			c.radius = rad;
 			cc.Reshape();
 			c.Reshape();
 			oldres = res;
+			oldrad = rad;
 		}
 
 		l.setPoints(glm::vec3(-4, 4, 0), glm::vec3(4, 4, 0));
 		l.Draw(::mainCamera.getPerspProjectionMatrix() * ::mainCamera.getViewMatrix());
 		
 
-		cc.Move(glm::vec3(1.5, 0,0));
+		
 		static float angle = 0;
 		angle += 0.3;
 		m = glm::translate(m, glm::vec3(0.001, 0., 0.));
@@ -246,14 +230,16 @@ int main() {
 		for (int i = 0, s = gameObjects.size(); i < s;i++) {
 			if (i % 2)
 				gameObjects[i].Rotate(-angle);
-			gameObjects[i].Move(glm::vec3(2 * i, 2 * i, 0));
+			gameObjects[i].MoveToPosition(glm::vec3(2 * i, 2 * i, 0));
 
 			gameObjects[i].Update();
 			gameObjects[i].Draw(shaderProgram, ::mainCamera);
 			CollisionProps = collision2->isCollide(c, gameObjects[i], ::mainCamera.getPerspProjectionMatrix() * ::mainCamera.getViewMatrix());
 			if (CollisionProps.isCollide){
 				collide = CollisionProps.penetration;
+				glm::vec2 axis = CollisionProps.Normal;
 
+				c.Move(glm::vec3(CollisionProps.ReactionA, 0) * collide);
 			}
 			
 		}
@@ -262,12 +248,44 @@ int main() {
 		CollisionProps = collision2->isCollide(c, cc, ::mainCamera.getPerspProjectionMatrix() * ::mainCamera.getViewMatrix());
 		if (CollisionProps.isCollide){
 			collide = CollisionProps.penetration;
+			glm::vec2 axis = CollisionProps.Normal;
+
+			c.Move(glm::vec3(CollisionProps.ReactionA, 0) * collide/2.f );
+			cc.Move(glm::vec3(CollisionProps.ReactionB, 0) * collide/2.f);
+			
+			
+			c.Update();
+			cc.Update();
 
 		}
 	
 		
 		// ===================== TEST ZONE! NO ENTER! =========================
 
+		ImGui_ImplOpenGL3_NewFrame();
+		ImGui_ImplGlfw_NewFrame();
+		ImGui::NewFrame();
+
+		if (::imGuiShowDemoWindow)
+			ImGui::ShowDemoWindow(&::imGuiShowDemoWindow);            // Показать окно с демонстрацией возможностей imgui
+
+		ImGui::Begin("Hello, world!");                                // Создать окно с названием "Hello, world!"
+		ImGui::Checkbox("Show demo window?", &::imGuiShowDemoWindow); // Здесь пишем логику окна
+		ImGui::SliderInt("resolution ", &res, 2, 70);
+		ImGui::SliderFloat("radius ", &rad, 0.5, 10);
+		ImGui::End();                                                 // Завершить обработку окна с названием "Hello, world!"
+
+		ImGui::Begin("Camera stats");
+		std::string stat = std::to_string(mainCamera.position.x);
+		stat += " " + std::to_string(mainCamera.position.y);
+		stat += " " + std::to_string(mainCamera.position.z);
+		ImGui::Text(stat.c_str());
+		ImGui::Text((std::string("Is collide: ") + std::to_string(collide)).c_str());
+		ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+		ImGui::End();
+		ImGui::EndFrame();
+		ImGui::Render();         // Рисуем интерфейс с помощью imgui
+		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 		
 		mainCamera.processKeyboard(::pressedKeys, ::deltaTime);
 		calculateGlobalDeltaTime();

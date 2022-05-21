@@ -42,7 +42,8 @@ public:
 	void SetAngularAcceleration(float e) { angularAcceleration = e; }
 	
 protected:
-	void Move(glm::vec3 position)          ;         // Перемещение в точку
+	void MoveToPosition(glm::vec3 position)          ;         // Перемещение в точку
+	void Move(glm::vec3 direction);
 	void Rotate(float angle)               ;         // Поворот относительно центра
 	glm::vec3 CalculateMassCenter();			     // Расчет центра масс
     glm::vec3 CalculateMassCenter(Mesh m);           // Универсальный расчет центра масс в зависимости от меша

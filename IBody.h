@@ -31,7 +31,8 @@ public:
 	virtual void SetAngularVelocity(float)     = 0;
 	virtual void SetAngularAcceleration(float) = 0;
 
-	virtual void Move(glm::vec3 position)   = 0;		   // Перемещение в точку
+	virtual void MoveToPosition(glm::vec3 position)   = 0;		   // Перемещение в точку
+	virtual void Move(glm::vec3 direction) = 0;            // Перемещение по вектору
 	virtual void Rotate(float angle)        = 0;  		   // Поворот относительно центра
 	virtual glm::vec3 CalculateMassCenter() = 0;           // Расчет центра масс
 };

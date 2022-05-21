@@ -62,7 +62,8 @@ public:
 		if (minProjDetA.penetration < minProjDetB.penetration) {
 			collisionProperties.penetration = minProjDetA.penetration;
 			collisionProperties.Normal = glm::normalize(minProjDetA.axis);
-
+			collisionProperties.ReactionA = collisionProperties.Normal;
+			collisionProperties.ReactionB = -collisionProperties.Normal;
 			l.setColor(glm::vec3(0., 1., 1.));
 			l.setPoints(glm::vec3(0.), -glm::vec3(collisionProperties.Normal, 0) * collisionProperties.penetration);
 			l.Draw(m * glm::translate(glm::mat4(1), glm::vec3(minProjDetA.maxPoint, 0)));
@@ -75,6 +76,8 @@ public:
 		{
 			collisionProperties.penetration = minProjDetB.penetration;
 			collisionProperties.Normal = glm::normalize(minProjDetB.axis);
+			collisionProperties.ReactionA = -collisionProperties.Normal;
+			collisionProperties.ReactionB = collisionProperties.Normal;
 
 			l.setColor(glm::vec3(0., 1., 1.));
 			l.setPoints(glm::vec3(0.), -glm::vec3(collisionProperties.Normal, 0) * collisionProperties.penetration);
@@ -88,6 +91,8 @@ public:
 
 			collisionProperties.penetration = minProjDetB.penetration;
 			collisionProperties.Normal = glm::normalize(minProjDetB.axis);
+			collisionProperties.ReactionA = -collisionProperties.Normal;
+			collisionProperties.ReactionB = collisionProperties.Normal;
 
 			l.setColor(glm::vec3(1., 1., 1.));
 			l.setPoints(glm::vec3(0.), -glm::vec3(collisionProperties.Normal, 0) * collisionProperties.penetration);
@@ -137,11 +142,11 @@ public:
 		for (auto& v : vertices) {
 			float projection = GetPointProjection(v, line);
 
-			if (projection <= proj.min) {
+			if (projection < proj.min) {
 				proj.min = projection;
 				projDet.minPoint = { v.x, v.y };
 			}
-			if (projection >= proj.max) {
+			if (projection > proj.max) {
 				proj.max = projection;
 				projDet.maxPoint = { v.x, v.y };
 			}

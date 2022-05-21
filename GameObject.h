@@ -33,7 +33,8 @@ public:
 	virtual std::unique_ptr<Mesh> CreateMesh()               { return Shape->CreateMesh(); }
 	std::unique_ptr<IShape> CreateShape()                   { return Shape->CreateShape(); }
 
-	void Move(glm::vec3 position) { Body->Move(position)       ; }
+	void MoveToPosition(glm::vec3 position) { Body->MoveToPosition(position)       ; }
+	void Move(glm::vec3 direction) { Body->Move(direction); }
 	void Rotate(float angle)      { Body->Rotate(angle)        ; }
 	virtual glm::vec3 CalculateMassCenter()    { return Body->CalculateMassCenter(); }
 
