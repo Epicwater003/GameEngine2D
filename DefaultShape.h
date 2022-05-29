@@ -35,7 +35,7 @@ public:
 	void SetColor(glm::vec3 col)        { this->color = col; }
 
 	void Draw(Shader& s, Camera& c);
-	void Update();
+	void Update(float dt);
 	std::unique_ptr<Mesh> CreateMesh();
 	std::unique_ptr<IShape> CreateShape() { return std::make_unique<DefaultShape>(); }
 
@@ -43,7 +43,7 @@ protected:
 	
 private:
 	glm::mat4 model = glm::mat4(1);	         // Матрица модели
-	glm::vec3 color = { 0.423,0.411,0.376 }; // Цвет
+	glm::vec3 color = { 1., 0.54, 0.41 }; // Цвет
 	std::unique_ptr<Mesh> mesh = CreateMesh();               
 };
 

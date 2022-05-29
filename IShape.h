@@ -35,7 +35,7 @@ public:
 	virtual void SetColor(glm::vec3 col)             = 0;
 
 	virtual void Draw(Shader& s, Camera& c) = 0;	 // Отрисовка
-	virtual void Update()     = 0;                   // Перерасчет параметров													 
+	virtual void Update(float dt)     = 0;                   // Перерасчет параметров													 
     virtual std::unique_ptr<Mesh> CreateMesh() = 0;		             // Создает сетку	 | TODO: Надо каким-то образом стандартизировать функцию для всех типов сеток
 	virtual std::unique_ptr<IShape> CreateShape() = 0;
 	

@@ -174,9 +174,12 @@
     <ClInclude Include="DrawablePrimitive.h">
       <Filter>Файлы заголовков\Utility</Filter>
     </ClInclude>
+    <ClInclude Include="ImpulseResponse.h">
+      <Filter>Interfaces\Implementation</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="ClassDiagram.cd" />
+    <None Include="Objects.cd" />
     <None Include="Default.vert">
       <Filter>Файлы ресурсов</Filter>
     </None>
@@ -189,6 +192,7 @@
     <None Include="DrawAABB.frag">
       <Filter>Файлы ресурсов</Filter>
     </None>
+    <None Include="Utility.cd" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="planks.png">

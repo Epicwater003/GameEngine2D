@@ -2,11 +2,10 @@
 
 void DefaultShape::Draw(Shader& s, Camera & c) {
 	
-	mesh->Draw(s, c, this->model, color);
+	mesh->Draw(s, c, this->model);
 }
 
-void DefaultShape::Update() {
-			 // TODO: Написать хоть что-то :D
+void DefaultShape::Update(float dt) {
 }
 
 

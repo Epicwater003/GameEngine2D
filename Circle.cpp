@@ -18,7 +18,7 @@ Circle::Circle(std::vector<Texture>& textures, float radius, float resolution):
 
 
 std::unique_ptr<Mesh> Circle::CreateCircleMesh(float resolution) {
-	// TODO: Переписать генератор меша на примерно такой https://stackoverflow.com/questions/50606756/creating-a-2d-circular-mesh-in-unity
+	
 	std::vector<Vertex> vertices;
 	Vertex vert;
 
@@ -42,13 +42,8 @@ std::unique_ptr<Mesh> Circle::CreateCircleMesh(float resolution) {
 		indices.push_back(i);
 		indices.push_back(i+1);
 	}
-	/*indices.push_back(0);
-	indices.push_back(vertices.size()-1);
-	indices.push_back(vertices.size());*/
+
 	
 
 	return std::make_unique<Mesh>(vertices, indices);
-}
-glm::vec3 Circle::CalculateMassCenter() {
-	return glm::vec3(0);
 }

@@ -184,6 +184,7 @@
     <ClInclude Include="ICollide.h" />
     <ClInclude Include="ICollisionEngine.h" />
     <ClInclude Include="IDrawable.h" />
+    <ClInclude Include="ImpulseResponse.h" />
     <ClInclude Include="IShape.h" />
     <ClInclude Include="IResponseEngine.h" />
     <ClInclude Include="Particle.h" />
@@ -197,7 +198,8 @@
     <ClInclude Include="Vertex.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="ClassDiagram.cd" />
+    <None Include="Utility.cd" />
+    <None Include="Objects.cd" />
     <None Include="Default.frag" />
     <None Include="Default.vert" />
     <None Include="DrawAABB.frag" />

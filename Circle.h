@@ -37,7 +37,6 @@ public:
 
 protected:
     GameObject* Create() { return new Circle(); };
-    glm::vec3 CalculateMassCenter();
 private:
     std::unique_ptr<Mesh> CreateCircleMesh(float resolution);
 

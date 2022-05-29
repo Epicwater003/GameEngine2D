@@ -1,6 +1,6 @@
 #version 330 core
 
-// Данные из движка
+// Data from engine
 uniform mat4 eModel;
 uniform mat4 eView;
 uniform mat4 eProjection;
@@ -8,24 +8,23 @@ uniform vec3 eViewPos;
 uniform float eTime;
 uniform bool  hasTextures;
 
-//
+
 vec3 gViewDir;
-// Получаем данные фрагмента из вершинного шейдера
+// Data from vertex shader
 in struct_vertOut
 {
     vec3 FragPos;
-    vec3 Normal; // Может быть ненормализованна!
     vec2 TexCoords;
     vec3 Color;
+    vec3 Normal; // Mb unnormalized, be carefull
 } fragIn;
 
-// Глобальные(для удобства доступа) переменные подготовленные для использования 
+// Global variables, just for comfort
 vec3 gFragPos;
-vec3 gNormal;
 vec2 gTexCoords;
 vec3 gColor;
-
-// Текстурные блоки
+vec3 gNormal;
+// Textures
 uniform sampler2D DiffTex0;
 //uniform sampler2D DiffTex1;
 uniform sampler2D SpecTex0;
@@ -34,7 +33,7 @@ uniform sampler2D SpecTex0;
 vec4 gDiffuseMap;
 vec4 gSpecularMap;
 
-// Передаем цвет дальше по конвееру
+// Color out
 out vec4 fragColor;
 
 
@@ -45,11 +44,12 @@ void main()
         gNormal  = fragIn.Normal;
         gTexCoords = fragIn.TexCoords;
         gColor = fragIn.Color; 
+        //gColor = vec3(0.423,0.411,0.376);
         if(hasTextures){
-            gDiffuseMap = texture(DiffTex0, fragIn.TexCoords);
+            gDiffuseMap = texture(DiffTex0, fragIn.TexCoords.xy);
             fragColor = vec4(gDiffuseMap);
         }
         else{
-            fragColor = vec4(1,gColor);
+            fragColor = vec4(gColor, 1);
         }
 }

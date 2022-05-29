@@ -44,6 +44,7 @@
 #include "SAT2D.h"
 #include "GameEngine.h"
 #include "DrawablePrimitive.h"
+#include "ImpulseResponse.h"
 
 
 void calculateGlobalDeltaTime();
@@ -71,6 +72,12 @@ GLfloat deltaTime = 0.0f;	    // Время, прошедшее между последним и текущим кадр
 GLfloat lastFrameTime = 0.0f;  	// Время вывода последнего кадра
 
 Camera mainCamera;
+
+
+//float Cross(glm::vec2 a, glm::vec2 b) // TODO: Вынести в класс Math
+//{
+//	return a.x * b.y - a.y * b.x;
+//}
 
 
 int main() {
@@ -107,6 +114,10 @@ int main() {
 	glViewport(0, 0, ::SCREEN_WIDTH, ::SCREEN_HEIGHT); // Передаем OpenGl размер окна
 	//glEnable(GL_DEPTH_TEST);                           // Включаем использование буфера глубины
 	glEnable(GL_MULTISAMPLE);                          // Включаем MSAA
+	glEnable(GL_PROGRAM_POINT_SIZE);
+	glEnable(GL_VERTEX_PROGRAM_POINT_SIZE);
+	glPointSize(8.);
+	glLineWidth(3.);
 	glClearColor(0.902, 0.894, 0.847, 1.);             // Цвет фона после очистки экрана
 	
 	
@@ -141,41 +152,57 @@ int main() {
 	Shader AABBShader("DrawAABB.vert", "DrawAABB.frag");
 	
 	DrawablePrimitive::Line l(glm::vec3(0., 0., 0.), glm::vec3(0.5, 0.5, 0.));
+	DrawablePrimitive::Point p(glm::vec3(0));
 
 	Circle c;
 	Circle cc;
 	Circle ccc0;
-	Circle ccc1;
-	Circle ccc2;
-	Circle ccc3;
-
+	Circle platform;
 	std::vector<GameObject> gameObjects;
 
 	gameObjects.push_back(std::move(ccc0));
-	gameObjects.push_back(std::move(ccc1));
-	gameObjects.push_back(std::move(ccc2));
-	gameObjects.push_back(std::move(ccc3));
-	/*gameObjects.emplace_back(ccc0);
-	gameObjects.emplace_back(ccc1);
-	gameObjects.emplace_back(ccc2);
-	gameObjects.emplace_back(ccc3);*/
 
 
 	static int res = 2;
+	static float speed = 0.03;
 	static float rad = 1;
 	static int oldres = -1;
 	static float oldrad = 1;
 	static float arrowUp = 0;
 	static float arrowRight = 0;
+	static float arrowUpCC = 0;
+	static float arrowRightCC = 0;
 	static float collide = 0;
 	static float isCollide = 0;
+	static float dynfric = 0.33f;
+	static float statfric = 0.66f;
+	
 	cc.SetTextures(tex);
-	cc.MoveToPosition(glm::vec3(1.5, 0, 0));
+	cc.SetPosition(glm::vec3(1.5, 0.5, 0));
+	//cc.SetAngularVelocity(2.);
+	//cc.SetAngularAcceleration(20.);
+	c.SetAngle(45);
+	c.SetMass(1000000);
+	cc.SetAngle(45);
+	c.Update(0);
+	cc.Update(0);
+	
+	platform.resolution = 2;
+	platform.radius = 100;
+	platform.SetColor(glm::vec3(.39, 0.42, .39));
+	platform.Reshape();
+	platform.SetMass(0);
+	platform.SetAngle(45);
+	platform.SetPosition(glm::vec3(0, -40, 0));
+	platform.Update(0);
 	//c.SetTextures(tex);
 
 	glm::mat4 m(1.);
 	AABB2D* collision = new AABB2D();
 	SAT2D* collision2 = new SAT2D();
+	IResponseEngine* responseEngine = new ImpulseResponseNFNR();
+	IResponseEngine* responseEngine1 = new ImpulseResponseWFNR();
+
 	// ===================== TEST ZONE! NO ENTER! =========================
 
 	while (!glfwWindowShouldClose(window)){	                // Игровой цикл
@@ -184,17 +211,32 @@ int main() {
 		// ===================== TEST ZONE! NO ENTER! =========================
 		arrowRight = 0;
 		arrowUp = 0;
+		arrowRightCC = 0;
+		arrowUpCC = 0;
 		if (::pressedKeys[GLFW_KEY_LEFT]) {
-			arrowRight -= 0.01;
+			arrowRight = -speed;
 		}
 		if (::pressedKeys[GLFW_KEY_RIGHT]) {
-			arrowRight += 0.01;
+			arrowRight = speed;
 		}
 		if (::pressedKeys[GLFW_KEY_UP]) {
-			arrowUp += 0.01;
+			arrowUp = speed;
 		}
 		if (::pressedKeys[GLFW_KEY_DOWN]) {
-			arrowUp -= 0.01;
+			arrowUp = -speed;
+		}
+		
+		if (::pressedKeys[GLFW_KEY_J]) {
+			arrowRightCC = -speed;
+		}
+		if (::pressedKeys[GLFW_KEY_L]) {
+			arrowRightCC = speed;
+		}
+		if (::pressedKeys[GLFW_KEY_I]) {
+			arrowUpCC = speed;
+		}
+		if (::pressedKeys[GLFW_KEY_K]) {
+			arrowUpCC = -speed;
 		}
 
 
@@ -207,59 +249,43 @@ int main() {
 			oldres = res;
 			oldrad = rad;
 		}
-
-		l.setPoints(glm::vec3(-4, 4, 0), glm::vec3(4, 4, 0));
-		l.Draw(::mainCamera.getPerspProjectionMatrix() * ::mainCamera.getViewMatrix());
-		
-
 		
 		static float angle = 0;
 		angle += 0.3;
 		m = glm::translate(m, glm::vec3(0.001, 0., 0.));
-		cc.Rotate(-angle);
-		c.Rotate(angle);
-		c.Move(glm::vec3(arrowRight, arrowUp,0));
-
+		//cc.SetAngle(-angle);
+		//c.SetAngle(angle);
+		c.AddVelocity(glm::vec3(arrowRight, arrowUp,0));
+		cc.AddVelocity(glm::vec3(arrowRightCC, arrowUpCC, 0));
+		//cc.SetPosition(glm::vec3(1.5f, cc.GetPosition().y, 0.f));
+		//cc.SetVelocity(glm::vec3(0., cc.GetVelocity().y, 0.));
 		
-		c.Update();
-		cc.Update();
+		collide = 0;
+		CollisionDetails CollisionProps = {false, 0};
+		
+
+		CollisionProps = collision2->GetCollisionProperties(c, cc);
+		responseEngine1->SolveCollision(c, cc, CollisionProps);
+
+		c.Update(deltaTime);
+		cc.Update(deltaTime);
+
+		CollisionProps = collision2->GetCollisionProperties(c, platform);
+		responseEngine1->SolveCollision(c, platform, CollisionProps);
+
+		c.Update(deltaTime);
+		cc.Update(deltaTime);
+
+		CollisionProps = collision2->GetCollisionProperties(cc, platform);
+		responseEngine1->SolveCollision(cc, platform, CollisionProps);
+
+		c.Update(deltaTime);
+		cc.Update(deltaTime);
+
 		c.Draw(shaderProgram, ::mainCamera);
 		cc.Draw(shaderProgram, ::mainCamera);
-		collide = 0;
-		CollisionProperties2D CollisionProps = {false, 0};
-		for (int i = 0, s = gameObjects.size(); i < s;i++) {
-			if (i % 2)
-				gameObjects[i].Rotate(-angle);
-			gameObjects[i].MoveToPosition(glm::vec3(2 * i, 2 * i, 0));
 
-			gameObjects[i].Update();
-			gameObjects[i].Draw(shaderProgram, ::mainCamera);
-			CollisionProps = collision2->isCollide(c, gameObjects[i], ::mainCamera.getPerspProjectionMatrix() * ::mainCamera.getViewMatrix());
-			if (CollisionProps.isCollide){
-				collide = CollisionProps.penetration;
-				glm::vec2 axis = CollisionProps.Normal;
-
-				c.Move(glm::vec3(CollisionProps.ReactionA, 0) * collide);
-			}
-			
-		}
-
-		
-		CollisionProps = collision2->isCollide(c, cc, ::mainCamera.getPerspProjectionMatrix() * ::mainCamera.getViewMatrix());
-		if (CollisionProps.isCollide){
-			collide = CollisionProps.penetration;
-			glm::vec2 axis = CollisionProps.Normal;
-
-			c.Move(glm::vec3(CollisionProps.ReactionA, 0) * collide/2.f );
-			cc.Move(glm::vec3(CollisionProps.ReactionB, 0) * collide/2.f);
-			
-			
-			c.Update();
-			cc.Update();
-
-		}
-	
-		
+		platform.Draw(shaderProgram, ::mainCamera);
 		// ===================== TEST ZONE! NO ENTER! =========================
 
 		ImGui_ImplOpenGL3_NewFrame();
@@ -271,8 +297,11 @@ int main() {
 
 		ImGui::Begin("Hello, world!");                                // Создать окно с названием "Hello, world!"
 		ImGui::Checkbox("Show demo window?", &::imGuiShowDemoWindow); // Здесь пишем логику окна
+		ImGui::SliderFloat("Speed ", &speed, 0.01, 2.1);
 		ImGui::SliderInt("resolution ", &res, 2, 70);
 		ImGui::SliderFloat("radius ", &rad, 0.5, 10);
+		ImGui::SliderFloat("static fric ", &statfric, 0, 1);
+		ImGui::SliderFloat("dynamic fric ", &dynfric, 0, 1);
 		ImGui::End();                                                 // Завершить обработку окна с названием "Hello, world!"
 
 		ImGui::Begin("Camera stats");
@@ -281,6 +310,7 @@ int main() {
 		stat += " " + std::to_string(mainCamera.position.z);
 		ImGui::Text(stat.c_str());
 		ImGui::Text((std::string("Is collide: ") + std::to_string(collide)).c_str());
+		//ImGui::Text((std::string("Will be separated by vel: ") + std::to_string(isSeparatingByVelocity >= 0 ? 1 : 0)).c_str());
 		ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 		ImGui::End();
 		ImGui::EndFrame();

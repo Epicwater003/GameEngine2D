@@ -19,9 +19,9 @@ public:
 	Mesh(std::vector <Vertex>& vertices, std::vector <GLuint>& indices);
 	//Mesh();
 	Mesh(const Mesh& refMesh);
-	void Draw(Shader& shader, Camera& camera, glm::mat4& model, glm::vec3 color, bool drawWireframed = false);
+
 	void Draw(Shader& shader, Camera& camera, glm::mat4 &model, bool drawWireframed = false);
-	void Draw(Shader &shader, Camera &camera, bool drawWireframed = false);
+	void Draw(Shader &shader, Camera& camera, bool drawWireframed = false);
 	void AttachTexture(Texture &texture);
 	void AttachTextures(std::vector<Texture>& texture);
 	void ReloadData();
@@ -42,6 +42,8 @@ private:
 	std::vector <GLuint> indices;
 	std::vector <Texture> textures;
 	
+	std::shared_ptr<VBO> vbo;
+	std::shared_ptr<EBO> ebo;
 	std::shared_ptr<VAO> vao = std::make_shared<VAO>();
 };
 

@@ -29,14 +29,12 @@ public:
 	virtual void Reshape(){};
 
 	virtual void Draw(Shader& s, Camera& c) { Shape->Draw(s, c)         ; }
-	virtual void Update()                   ;//{ Shape->Update()           ; }
+	virtual void Update(float dt);                           // { Shape->Update(); }
 	virtual std::unique_ptr<Mesh> CreateMesh()               { return Shape->CreateMesh(); }
 	std::unique_ptr<IShape> CreateShape()                   { return Shape->CreateShape(); }
 
-	void MoveToPosition(glm::vec3 position) { Body->MoveToPosition(position)       ; }
-	void Move(glm::vec3 direction) { Body->Move(direction); }
-	void Rotate(float angle)      { Body->Rotate(angle)        ; }
-	virtual glm::vec3 CalculateMassCenter()    { return Body->CalculateMassCenter(); }
+	virtual glm::vec3 CalculateMassCenter()    { return Body->CalculateMassCenter(*Shape); }
+	virtual glm::vec3 CalculateMassCenter(IShape& sh) { return Body->CalculateMassCenter(sh); }
 
 	//IShape   GetShape()       { return Shape->GetShape()      ; }
 	Mesh     GetMesh()        { return Shape->GetMesh()       ; }
@@ -53,11 +51,15 @@ public:
 	glm::vec3 GetVelocity()     { return Body->GetVelocity()    ; }
 	glm::vec3 GetAcceleration() { return Body->GetAcceleration(); }
 	glm::vec3 GetMassCenter()   { return Body->GetMassCenter()  ; }
+	glm::vec3 GetForce() { return Body->GetForce(); }
 	float GetDensity()             { return Body->GetDensity()            ; }
+	float GetRestitution()         { return Body->GetRestitution()        ; }
 	float GetMass()                { return Body->GetMass()               ; }
 	float GetAngle()               { return Body->GetAngle()              ; }
 	float GetAngularVelocity()     { return Body->GetAngularVelocity()    ; }
 	float GetAngularAcceleration() { return Body->GetAngularAcceleration(); }
+	float GetTorque() { return Body->GetTorque(); }
+	float GetMomentOfInertia() { return Body->GetMomentOfInertia(); }
 
 	void SetShape(IShape& shape)       { Shape = shape.CreateShape(); }
 	void SetMesh(Mesh& mesh)            { Shape->SetMesh(mesh)              ; }
@@ -74,11 +76,30 @@ public:
 	void SetVelocity(glm::vec3 v)     { Body->SetVelocity(v)    ; }
 	void SetAcceleration(glm::vec3 a) { Body->SetAcceleration(a); }
 	void SetMassCenter(glm::vec3 mc)  { Body->SetMassCenter(mc) ; }
+	void SetForce(glm::vec3 f) { Body->SetForce(f); }
 	void SetDensity(float d)             { Body->SetDensity(d)            ; }
+	void SetRestitution(float r)         { Body->SetRestitution(r)        ; }
 	void SetMass(float m)                { Body->SetMass(m)               ; }
 	void SetAngle(float a)               { Body->SetAngle(a)              ; }
 	void SetAngularVelocity(float w)     { Body->SetAngularVelocity(w)    ; }
 	void SetAngularAcceleration(float e) { Body->SetAngularAcceleration(e); }
+	void SetTorque(float t) { Body->SetTorque(t); }
+	void SetMomentOfInertia(float mi) { Body->SetMomentOfInertia(mi); }
+
+	void AddPosition(glm::vec3 p)     { Body->AddPosition(p)    ; }
+	void AddDirection(glm::vec3 d)    { Body->AddDirection(d)   ; }
+	void AddVelocity(glm::vec3 v)     { Body->AddVelocity(v)    ; }
+	void AddAcceleration(glm::vec3 a) { Body->AddAcceleration(a); }
+	void AddMassCenter(glm::vec3 mc)  { Body->AddMassCenter(mc) ; }
+	void AddForce(glm::vec3 f) { Body->AddForce(f); }
+	void AddDensity(float d)             { Body->AddDensity(d)            ; }
+	void AddRestitution(float r)         { Body->AddRestitution(r)        ; }
+	void AddMass(float m)                { Body->AddMass(m)               ; }
+	void AddAngle(float a)               { Body->AddAngle(a)              ; }
+	void AddAngularVelocity(float w)     { Body->AddAngularVelocity(w)    ; }
+	void AddAngularAcceleration(float e) { Body->AddAngularAcceleration(e); }
+	void AddTorque(float t) { Body->AddTorque(t); }
+	void AddMomentOfInertia(float mi) { Body->AddMomentOfInertia(mi); }
 
 protected:
 private:

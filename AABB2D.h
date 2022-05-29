@@ -12,8 +12,8 @@
 #include "Buffer.h"
 #include "Vertex.h"
 
-class AABB2D:
-	public ICollisionEngine
+class AABB2D//:
+	//public ICollisionEngine
 {
 public:
 	
