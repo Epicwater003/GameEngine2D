@@ -17,6 +17,8 @@ public:
 	virtual glm::vec3 GetForce()        = 0;
 	virtual float GetDensity()          = 0;
 	virtual float GetRestitution()      = 0;
+	virtual float GetStaticFriction()   = 0;
+	virtual float GetDynamicFriction()  = 0;
 	virtual float GetMass()             = 0;
 	virtual float GetAngle()            = 0;
 	virtual float GetAngularVelocity()  = 0;
@@ -33,6 +35,8 @@ public:
 	virtual void SetForce(glm::vec3)           = 0;
 	virtual void SetDensity(float)             = 0;
 	virtual void SetRestitution(float)         = 0;
+	virtual void SetStaticFriction(float)      = 0;
+	virtual void SetDynamicFriction(float)     = 0;
 	virtual void SetMass(float)                = 0;
 	virtual void SetAngle(float)               = 0;
 	virtual void SetAngularVelocity(float)     = 0;
@@ -48,6 +52,8 @@ public:
 	virtual void AddForce(glm::vec3)		   = 0;
 	virtual void AddDensity(float)             = 0;
 	virtual void AddRestitution(float)         = 0;
+	virtual void AddStaticFriction(float)      = 0;
+	virtual void AddDynamicFriction(float)     = 0;
 	virtual void AddMass(float)                = 0;
 	virtual void AddAngle(float)               = 0;
 	virtual void AddAngularVelocity(float)     = 0;

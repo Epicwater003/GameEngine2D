@@ -54,6 +54,8 @@ public:
 	glm::vec3 GetForce() { return Body->GetForce(); }
 	float GetDensity()             { return Body->GetDensity()            ; }
 	float GetRestitution()         { return Body->GetRestitution()        ; }
+	float GetStaticFriction()      { return Body->GetStaticFriction()     ; }
+	float GetDynamicFriction()     { return Body->GetDynamicFriction()    ; }
 	float GetMass()                { return Body->GetMass()               ; }
 	float GetAngle()               { return Body->GetAngle()              ; }
 	float GetAngularVelocity()     { return Body->GetAngularVelocity()    ; }
@@ -79,6 +81,8 @@ public:
 	void SetForce(glm::vec3 f) { Body->SetForce(f); }
 	void SetDensity(float d)             { Body->SetDensity(d)            ; }
 	void SetRestitution(float r)         { Body->SetRestitution(r)        ; }
+	void SetStaticFriction(float sf) { Body->SetStaticFriction(sf); }
+	void SetDynamicFriction(float df) { Body->SetDynamicFriction(df); }
 	void SetMass(float m)                { Body->SetMass(m)               ; }
 	void SetAngle(float a)               { Body->SetAngle(a)              ; }
 	void SetAngularVelocity(float w)     { Body->SetAngularVelocity(w)    ; }
@@ -94,6 +98,8 @@ public:
 	void AddForce(glm::vec3 f) { Body->AddForce(f); }
 	void AddDensity(float d)             { Body->AddDensity(d)            ; }
 	void AddRestitution(float r)         { Body->AddRestitution(r)        ; }
+	void AddStaticFriction(float sf) { Body->AddStaticFriction(sf); }
+	void AddDynamicFriction(float df) { Body->AddDynamicFriction(df); }
 	void AddMass(float m)                { Body->AddMass(m)               ; }
 	void AddAngle(float a)               { Body->AddAngle(a)              ; }
 	void AddAngularVelocity(float w)     { Body->AddAngularVelocity(w)    ; }

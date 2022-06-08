@@ -39,27 +39,6 @@
     <ClCompile Include="glad.c">
       <Filter>lib</Filter>
     </ClCompile>
-    <ClCompile Include="imgui.cpp">
-      <Filter>lib</Filter>
-    </ClCompile>
-    <ClCompile Include="imgui_demo.cpp">
-      <Filter>lib</Filter>
-    </ClCompile>
-    <ClCompile Include="imgui_draw.cpp">
-      <Filter>lib</Filter>
-    </ClCompile>
-    <ClCompile Include="imgui_impl_glfw.cpp">
-      <Filter>lib</Filter>
-    </ClCompile>
-    <ClCompile Include="imgui_impl_opengl3.cpp">
-      <Filter>lib</Filter>
-    </ClCompile>
-    <ClCompile Include="imgui_tables.cpp">
-      <Filter>lib</Filter>
-    </ClCompile>
-    <ClCompile Include="imgui_widgets.cpp">
-      <Filter>lib</Filter>
-    </ClCompile>
     <ClCompile Include="Shader.cpp">
       <Filter>Исходные файлы\Utility</Filter>
     </ClCompile>
@@ -100,6 +79,27 @@
     <ClCompile Include="GameObject.cpp">
       <Filter>Исходные файлы\GameObjects</Filter>
     </ClCompile>
+    <ClCompile Include="imgui.cpp">
+      <Filter>lib</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui_demo.cpp">
+      <Filter>lib</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui_draw.cpp">
+      <Filter>lib</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui_impl_glfw.cpp">
+      <Filter>lib</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui_impl_opengl3.cpp">
+      <Filter>lib</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui_tables.cpp">
+      <Filter>lib</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui_widgets.cpp">
+      <Filter>lib</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameEngine.h">
@@ -132,9 +132,6 @@
     <ClInclude Include="Circle.h">
       <Filter>Файлы заголовков\GameObjects</Filter>
     </ClInclude>
-    <ClInclude Include="Line.h">
-      <Filter>Файлы заголовков\GameObjects</Filter>
-    </ClInclude>
     <ClInclude Include="IBody.h">
       <Filter>Interfaces</Filter>
     </ClInclude>
@@ -162,9 +159,6 @@
     <ClInclude Include="ICollide.h">
       <Filter>Interfaces</Filter>
     </ClInclude>
-    <ClInclude Include="Particle.h">
-      <Filter>Файлы заголовков\GameObjects</Filter>
-    </ClInclude>
     <ClInclude Include="SAT2D.h">
       <Filter>Interfaces\Implementation</Filter>
     </ClInclude>
@@ -176,6 +170,33 @@
     </ClInclude>
     <ClInclude Include="ImpulseResponse.h">
       <Filter>Interfaces\Implementation</Filter>
+    </ClInclude>
+    <ClInclude Include="Libraries\include\imgui\imconfig.h">
+      <Filter>lib</Filter>
+    </ClInclude>
+    <ClInclude Include="Libraries\include\imgui\imgui.h">
+      <Filter>lib</Filter>
+    </ClInclude>
+    <ClInclude Include="Libraries\include\imgui\imgui_impl_glfw.h">
+      <Filter>lib</Filter>
+    </ClInclude>
+    <ClInclude Include="Libraries\include\imgui\imgui_impl_opengl3.h">
+      <Filter>lib</Filter>
+    </ClInclude>
+    <ClInclude Include="Libraries\include\imgui\imgui_impl_opengl3_loader.h">
+      <Filter>lib</Filter>
+    </ClInclude>
+    <ClInclude Include="Libraries\include\imgui\imgui_internal.h">
+      <Filter>lib</Filter>
+    </ClInclude>
+    <ClInclude Include="Libraries\include\imgui\imstb_rectpack.h">
+      <Filter>lib</Filter>
+    </ClInclude>
+    <ClInclude Include="Libraries\include\imgui\imstb_textedit.h">
+      <Filter>lib</Filter>
+    </ClInclude>
+    <ClInclude Include="Libraries\include\imgui\imstb_truetype.h">
+      <Filter>lib</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

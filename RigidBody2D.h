@@ -31,9 +31,11 @@ public:
 	glm::vec3 GetVelocity()        { return glm::vec3(velocity.x, velocity.y, 0)        ; }
 	glm::vec3 GetAcceleration()    { return glm::vec3(acceleration.x, acceleration.y, 0); }
 	glm::vec3 GetMassCenter()      { return glm::vec3(massCenter.x,massCenter.y,0)      ; }
-	glm::vec3 GetForce()           {return glm::vec3(force.x, force.y, 0)               ; }
+	glm::vec3 GetForce()           { return glm::vec3(force.x, force.y, 0)              ; }
 	float GetDensity()             { return density            ; }
 	float GetRestitution()         { return restitution        ; }
+	float GetStaticFriction()      { return staticFriction     ; }
+	float GetDynamicFriction()     { return dynamicFriction    ; }
 	float GetMass()                { return mass               ; }
 	float GetAngle()               { return angle              ; }
 	float GetAngularVelocity()     { return angularVelocity    ; }
@@ -52,6 +54,8 @@ public:
 	void SetForce(glm::vec3 f)        { force        = { f.x, f.y }   ; }
 	void SetDensity(float d)             { density = d            ; }
 	void SetRestitution(float r)         { restitution = r        ; }
+	void SetStaticFriction(float sf)     { staticFriction = sf    ; }
+	void SetDynamicFriction(float df)    { dynamicFriction = df   ; }
 	void SetMass(float m)                { mass = m               ; }
 	void SetAngle(float a)               { angle = a              ; }
 	void SetAngularVelocity(float w)     { angularVelocity = w    ; }
@@ -74,6 +78,8 @@ public:
 	                                    force.y        += f.y;  }
 	void AddDensity(float d)             { density += d            ; }
 	void AddRestitution(float r)         { restitution += r        ; }
+	void AddStaticFriction(float sf)     { staticFriction += sf    ; }
+	void AddDynamicFriction(float df)    { dynamicFriction += df   ; }
 	void AddMass(float m)                { mass += m               ; }
 	void AddAngle(float a)               { angle += a              ; }
 	void AddAngularVelocity(float w)     { angularVelocity += w    ; }
@@ -87,21 +93,23 @@ protected:
     glm::vec3 CalculateMassCenter(IShape& sh);           // Универсальный расчет центра масс в зависимости от меша
 private:
 
-	float mass    = 1.;	                 // Масса
-	glm::vec2 position     = { 0., 0. }; // Позиция
-	glm::vec2 velocity     = { 0., 0. }; // Скорость
-	glm::vec2 acceleration = { 0., 0. }; // Ускорение
+	float mass    = 1.;	                 // Масса в кг
+	glm::vec2 position     = { 0., 0. }; // Позиция в м
+	glm::vec2 velocity     = { 0., 0. }; // Скорость в м/c
+	glm::vec2 acceleration = { 0., 0. }; // Ускорение в м/с^2
 	glm::vec2 force        = { 0., 0. }; // Сила force = mass * acceleration
 
-	float momentOfInertia = 1.;          // Момент инерции
-	float angle   = 0.;	                 // Угол поворота тела
-	float angularVelocity     = 0.;	     // Угловая скорость
-	float angularAcceleration = 0.;	     // Угловое ускорение
+	float momentOfInertia = 1.;          // Момент инерции в кг*м^2
+	float angle   = 0.;	                 // Угол поворота тела в рад
+	float angularVelocity     = 0.;	     // Угловая скорость в рад/с
+	float angularAcceleration = 0.;	     // Угловое ускорение в рад/c^2
 	float torque              = 0.;      // Крутящий момент torque = momentOfInertia * angularAcceleration, torque = cross(point.pos, angularVel)
 	
 	float zIndex = 0.;
-	float density = 1.;                  // Плотность
+	float density = 1.;                  // Плотность кг/м
 	float restitution = 0.5;             // Коэффициент упругости
+	float staticFriction = 0.663;
+	float dynamicFriction = 0.336;
 	glm::vec2 direction = { 0., 1. };    // Вектор направления
 	glm::vec2 massCenter = { 0., 0. };   // Позиция центра масс https://habr.com/ru/post/579364/
 

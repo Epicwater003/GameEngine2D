@@ -10,10 +10,10 @@ glm::vec3 RigidBody2D::CalculateMassCenter(IShape& sh) {
 	auto vs = sh.GetVertices();
 	glm::vec2 answ(0);
 	for (auto& v : vs) {
-		answ += glm::vec2(v.position * density);
+		answ += glm::vec2(v.position * float(density));
 	}
-	massCenter = answ/mass;
-	return glm::vec3(answ/mass, 0);
+	massCenter = answ/float(mass);
+	return glm::vec3(massCenter, 0);
 }
 
 				

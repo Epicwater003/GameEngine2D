@@ -83,7 +83,7 @@ public:
 
         Vao->Bind();
         VBO Vbo(vertices.data(), sizeof(vertices));
-        Vao->LinkAttrib(Vbo, 0, 3, GL_FLOAT, 3 * sizeof(float), (void*)0);
+        Vao->LinkAttrib(Vbo, 0, 3,   GL_FLOAT, 3 * sizeof(float), (void*)0);
 
         Vao->Unbind();
         Vbo.Unbind();
@@ -106,7 +106,7 @@ public:
 
         Vao->Bind();
         VBO Vbo(vertices.data(), sizeof(vertices));
-        Vao->LinkAttrib(Vbo, 0, 3, GL_FLOAT, 3 * sizeof(float), (void*)0);
+        Vao->LinkAttrib(Vbo, 0, 3,   GL_FLOAT, 3 * sizeof(float), (void*)0);
 
         Vao->Unbind();
         Vbo.Unbind();
@@ -121,7 +121,7 @@ public:
 
         Vao->Bind();
         VBO Vbo(vertices.data(), sizeof(vertices));
-        Vao->LinkAttrib(Vbo, 0, 3, GL_FLOAT, 3 * sizeof(float), (void*)0);
+        Vao->LinkAttrib(Vbo, 0, 3,   GL_FLOAT, 3 * sizeof(float), (void*)0);
 
         Vao->Unbind();
         Vbo.Unbind();
@@ -179,7 +179,7 @@ public:
 
         Vao->Bind();
         VBO Vbo(vertices.data(), sizeof(vertices));
-        Vao->LinkAttrib(Vbo, 0, 3, GL_FLOAT, 3 * sizeof(float), (void*)0);
+        Vao->LinkAttrib(Vbo, 0, 3,   GL_FLOAT, 3 * sizeof(float), (void*)0);
 
         Vao->Unbind();
         Vbo.Unbind();
@@ -210,7 +210,7 @@ public:
 
         Vao->Bind();
         VBO Vbo(vertices.data(), sizeof(vertices));
-        Vao->LinkAttrib(Vbo, 0, 3, GL_FLOAT, 3 * sizeof(float), (void*)0);
+        Vao->LinkAttrib(Vbo, 0, 3,   GL_FLOAT, 3 * sizeof(float), (void*)0);
 
         Vao->Unbind();
         Vbo.Unbind();
@@ -231,7 +231,7 @@ public:
 
         Vao->Bind();
         VBO Vbo(vertices.data(), sizeof(vertices));
-        Vao->LinkAttrib(Vbo, 0, 3, GL_FLOAT, 3 * sizeof(float), (void*)0);
+        Vao->LinkAttrib(Vbo, 0, 3,   GL_FLOAT, 3 * sizeof(float), (void*)0);
 
         Vao->Unbind();
         Vbo.Unbind();
@@ -244,7 +244,7 @@ public:
 
         Vao->Bind();
         VBO Vbo(vertices.data(), sizeof(vertices));
-        Vao->LinkAttrib(Vbo, 0, 3, GL_FLOAT, 3 * sizeof(float), (void*)0);
+        Vao->LinkAttrib(Vbo, 0, 3,   GL_FLOAT, 3 * sizeof(float), (void*)0);
 
         Vao->Unbind();
         Vbo.Unbind();

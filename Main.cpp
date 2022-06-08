@@ -21,9 +21,10 @@
 */
 
 #include <iostream>
-#include <fstream>
 #include <vector>
 #include <string>
+#define _USE_MATH_DEFINES
+#include <math.h>
 
 #include <glm/glm.hpp>
 
@@ -39,6 +40,7 @@
 #include "Texture.h"
 #include "Mesh.h"
 #include "Circle.h"
+#include "Square.h"
 #include "ICollisionEngine.h"
 #include "AABB2D.h"
 #include "SAT2D.h"
@@ -67,6 +69,7 @@ bool processMouseClick  =  true;
 bool processMouseScroll =  true;
 
 GLboolean pressedKeys[1024];
+GLboolean pressedMouse[512];
 
 GLfloat deltaTime = 0.0f;	    // Время, прошедшее между последним и текущим кадром
 GLfloat lastFrameTime = 0.0f;  	// Время вывода последнего кадра
@@ -74,10 +77,8 @@ GLfloat lastFrameTime = 0.0f;  	// Время вывода последнего кадра
 Camera mainCamera;
 
 
-//float Cross(glm::vec2 a, glm::vec2 b) // TODO: Вынести в класс Math
-//{
-//	return a.x * b.y - a.y * b.x;
-//}
+const float fps = 100;
+const float dt = 1 / fps;
 
 
 int main() {
@@ -87,7 +88,7 @@ int main() {
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 	
-	glfwWindowHint(GLFW_SAMPLES, 4);                  // Включаем MSAA сглаживание
+	glfwWindowHint(GLFW_SAMPLES, 8);                  // Включаем MSAA сглаживание
 	
 	
 	GLFWwindow* window = glfwCreateWindow(::SCREEN_WIDTH, ::SCREEN_HEIGHT, "GameEngine2D", NULL, NULL); // Создание окна
@@ -116,8 +117,8 @@ int main() {
 	glEnable(GL_MULTISAMPLE);                          // Включаем MSAA
 	glEnable(GL_PROGRAM_POINT_SIZE);
 	glEnable(GL_VERTEX_PROGRAM_POINT_SIZE);
-	glPointSize(8.);
-	glLineWidth(3.);
+	glPointSize(8.); // Размер отрисовки 1 пикселя GL_DRAW_POINTS
+	glLineWidth(3.); // Ширина отрисовки линии GL_DRAW_LINES
 	glClearColor(0.902, 0.894, 0.847, 1.);             // Цвет фона после очистки экрана
 	
 	
@@ -149,170 +150,73 @@ int main() {
 	std::vector <Texture> tex(textures, textures + sizeof(textures) / sizeof(Texture));
 	
 	Shader shaderProgram("Default.vert", "Default.frag");
-	Shader AABBShader("DrawAABB.vert", "DrawAABB.frag");
 	
-	DrawablePrimitive::Line l(glm::vec3(0., 0., 0.), glm::vec3(0.5, 0.5, 0.));
-	DrawablePrimitive::Point p(glm::vec3(0));
-
-	Circle c;
-	Circle cc;
-	Circle ccc0;
-	Circle platform;
-	std::vector<GameObject> gameObjects;
-
-	gameObjects.push_back(std::move(ccc0));
-
-
-	static int res = 2;
-	static float speed = 0.03;
-	static float rad = 1;
-	static int oldres = -1;
-	static float oldrad = 1;
-	static float arrowUp = 0;
-	static float arrowRight = 0;
-	static float arrowUpCC = 0;
-	static float arrowRightCC = 0;
-	static float collide = 0;
-	static float isCollide = 0;
-	static float dynfric = 0.33f;
-	static float statfric = 0.66f;
-	
-	cc.SetTextures(tex);
-	cc.SetPosition(glm::vec3(1.5, 0.5, 0));
-	//cc.SetAngularVelocity(2.);
-	//cc.SetAngularAcceleration(20.);
-	c.SetAngle(45);
-	c.SetMass(1000000);
-	cc.SetAngle(45);
-	c.Update(0);
-	cc.Update(0);
-	
-	platform.resolution = 2;
-	platform.radius = 100;
-	platform.SetColor(glm::vec3(.39, 0.42, .39));
-	platform.Reshape();
-	platform.SetMass(0);
-	platform.SetAngle(45);
-	platform.SetPosition(glm::vec3(0, -40, 0));
-	platform.Update(0);
-	//c.SetTextures(tex);
-
-	glm::mat4 m(1.);
-	AABB2D* collision = new AABB2D();
-	SAT2D* collision2 = new SAT2D();
-	IResponseEngine* responseEngine = new ImpulseResponseNFNR();
-	IResponseEngine* responseEngine1 = new ImpulseResponseWFNR();
-
 	// ===================== TEST ZONE! NO ENTER! =========================
+	DrawablePrimitive::Line l;
+	DrawablePrimitive::Point p;
 
+
+	std::shared_ptr < AABB2D > collisionBroad = std::make_shared < AABB2D >();
+	std::shared_ptr < INarrowPhase > collisionNarrow = std::make_shared< SAT2D >();
+	std::shared_ptr <IResponseEngine> responseEngine = std::make_shared< ImpulseResponseNFNR>();
+	std::shared_ptr<IResponseEngine> responseEngineWithFriction = std::make_shared<ImpulseResponseWFNR>();
+	std::shared_ptr<IResponseEngine> responseEngineWithRotation = std::make_shared<ImpulseResponseWFWR>();
+
+	static float xCoord = 2;
+	static float yCoord = 1;
+	static float radius = 2;
+	static float gunPower = 1;
+	
+	GameEngine ge;
+	ge.doStep(1);
+	ge.CreateCircleObject(1000, 2, glm::vec3(0, -358, 0), glm::vec3(0),glm::vec3(0.2,0.2,0.2), 3.14f / 4.f, FLT_MAX, true);
+	
+	ge.CreateSquareObject(15, 3, glm::vec3(25, 5.1, 0), glm::vec3(0), glm::vec3(0.2, 0.5, 0.5), 0, 50, false);
+	ge.CreateSquareObject(8, 8, glm::vec3(25, 13.2, 0), glm::vec3(0), glm::vec3(0.2, 0.5, 0.8), 0, 50, false);
+	
+	ge.CreateSquareObject(4, 8, glm::vec3(30, -1, 0), glm::vec3(0), glm::vec3(0.1, 0.3, 0.3), 0, 50, false);
+	ge.CreateSquareObject(4, 8, glm::vec3(20, -1, 0), glm::vec3(0), glm::vec3(0.3, 0.3, 0.3), 0, 50, false);
+	ge.doStep(0);
+	static float acum = 0;
 	while (!glfwWindowShouldClose(window)){	                // Игровой цикл
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // Очищаем экран
 		
 		// ===================== TEST ZONE! NO ENTER! =========================
-		arrowRight = 0;
-		arrowUp = 0;
-		arrowRightCC = 0;
-		arrowUpCC = 0;
-		if (::pressedKeys[GLFW_KEY_LEFT]) {
-			arrowRight = -speed;
-		}
-		if (::pressedKeys[GLFW_KEY_RIGHT]) {
-			arrowRight = speed;
-		}
-		if (::pressedKeys[GLFW_KEY_UP]) {
-			arrowUp = speed;
-		}
-		if (::pressedKeys[GLFW_KEY_DOWN]) {
-			arrowUp = -speed;
-		}
 		
-		if (::pressedKeys[GLFW_KEY_J]) {
-			arrowRightCC = -speed;
+		acum += deltaTime;
+		if (acum >= 0.2) {
+			acum = 0.2;
 		}
-		if (::pressedKeys[GLFW_KEY_L]) {
-			arrowRightCC = speed;
+		if(acum >= dt){
+			ge.doStep(dt);
+			acum -= dt;
 		}
-		if (::pressedKeys[GLFW_KEY_I]) {
-			arrowUpCC = speed;
-		}
-		if (::pressedKeys[GLFW_KEY_K]) {
-			arrowUpCC = -speed;
-		}
+		ge.Render(shaderProgram, ::mainCamera);
+		l.setColor(glm::vec3(1));
+		l.setPoints(glm::vec3(0), glm::vec3(xCoord, yCoord, 0));
+		l.Draw(::mainCamera.getPerspProjectionMatrix()* ::mainCamera.getViewMatrix());
 
 
-		if(oldres!=res || oldrad !=rad){
-			cc.resolution = res;
-			c.resolution = res;
-			c.radius = rad;
-			cc.Reshape();
-			c.Reshape();
-			oldres = res;
-			oldrad = rad;
-		}
 		
-		static float angle = 0;
-		angle += 0.3;
-		m = glm::translate(m, glm::vec3(0.001, 0., 0.));
-		//cc.SetAngle(-angle);
-		//c.SetAngle(angle);
-		c.AddVelocity(glm::vec3(arrowRight, arrowUp,0));
-		cc.AddVelocity(glm::vec3(arrowRightCC, arrowUpCC, 0));
-		//cc.SetPosition(glm::vec3(1.5f, cc.GetPosition().y, 0.f));
-		//cc.SetVelocity(glm::vec3(0., cc.GetVelocity().y, 0.));
-		
-		collide = 0;
-		CollisionDetails CollisionProps = {false, 0};
-		
-
-		CollisionProps = collision2->GetCollisionProperties(c, cc);
-		responseEngine1->SolveCollision(c, cc, CollisionProps);
-
-		c.Update(deltaTime);
-		cc.Update(deltaTime);
-
-		CollisionProps = collision2->GetCollisionProperties(c, platform);
-		responseEngine1->SolveCollision(c, platform, CollisionProps);
-
-		c.Update(deltaTime);
-		cc.Update(deltaTime);
-
-		CollisionProps = collision2->GetCollisionProperties(cc, platform);
-		responseEngine1->SolveCollision(cc, platform, CollisionProps);
-
-		c.Update(deltaTime);
-		cc.Update(deltaTime);
-
-		c.Draw(shaderProgram, ::mainCamera);
-		cc.Draw(shaderProgram, ::mainCamera);
-
-		platform.Draw(shaderProgram, ::mainCamera);
 		// ===================== TEST ZONE! NO ENTER! =========================
-
+		
 		ImGui_ImplOpenGL3_NewFrame();
 		ImGui_ImplGlfw_NewFrame();
 		ImGui::NewFrame();
 
-		if (::imGuiShowDemoWindow)
-			ImGui::ShowDemoWindow(&::imGuiShowDemoWindow);            // Показать окно с демонстрацией возможностей imgui
-
 		ImGui::Begin("Hello, world!");                                // Создать окно с названием "Hello, world!"
-		ImGui::Checkbox("Show demo window?", &::imGuiShowDemoWindow); // Здесь пишем логику окна
-		ImGui::SliderFloat("Speed ", &speed, 0.01, 2.1);
-		ImGui::SliderInt("resolution ", &res, 2, 70);
-		ImGui::SliderFloat("radius ", &rad, 0.5, 10);
-		ImGui::SliderFloat("static fric ", &statfric, 0, 1);
-		ImGui::SliderFloat("dynamic fric ", &dynfric, 0, 1);
-		ImGui::End();                                                 // Завершить обработку окна с названием "Hello, world!"
+		ImGui::Text(" %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate); // Счетчик кадров
 
-		ImGui::Begin("Camera stats");
-		std::string stat = std::to_string(mainCamera.position.x);
-		stat += " " + std::to_string(mainCamera.position.y);
-		stat += " " + std::to_string(mainCamera.position.z);
-		ImGui::Text(stat.c_str());
-		ImGui::Text((std::string("Is collide: ") + std::to_string(collide)).c_str());
-		//ImGui::Text((std::string("Will be separated by vel: ") + std::to_string(isSeparatingByVelocity >= 0 ? 1 : 0)).c_str());
-		ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
-		ImGui::End();
+		ImGui::SliderFloat("X", &xCoord, -6.f, 6.f);
+		ImGui::SliderFloat("Y", &yCoord, -6.f, 6.f);
+		ImGui::SliderFloat("Radius", &radius, 0.5, 10.f);
+		ImGui::SliderFloat("Gun power", &gunPower, 1, 6.f);
+		if (ImGui::Button("Fire!"))
+			ge.CreateCircleObject(radius, 70, glm::vec3(0), glm::vec3(xCoord*gunPower, yCoord*gunPower, 0));
+		if (ImGui::Button("Clear"))
+			ge.Clear();
+
+		ImGui::End();                                                 // Завершить обработку окна с названием "Hello, world!"
 		ImGui::EndFrame();
 		ImGui::Render();         // Рисуем интерфейс с помощью imgui
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
@@ -357,6 +261,13 @@ void mouseCallback(GLFWwindow* window, double xpos, double ypos) {              
 
 void mouseButtonCallback(GLFWwindow* window, int button, int action, int mods) {    // Обработка кнопок мыши
 	if (::processMouseClick) {
+		if (action == GLFW_PRESS)
+		{
+			::pressedMouse[button] = true;
+		}
+		else if (action == GLFW_RELEASE) {
+			::pressedMouse[button] = false;
+		}
 		if (button == GLFW_MOUSE_BUTTON_RIGHT && action == GLFW_PRESS)
 			std::cout << "\a";
 	}

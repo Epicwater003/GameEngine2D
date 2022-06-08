@@ -27,16 +27,11 @@ public:
         
         Shape->SetIndices(i);
         Shape->SetVertices(v);
-       
-        //Shape->SetMesh(m);
-        //Shape->GetMesh().setIndices(i);
-        //Shape->GetMesh().ReloadData();
     }
 
     std::unique_ptr<Mesh> CreateMesh() { return CreateCircleMesh(resolution); }
 
 protected:
-    GameObject* Create() { return new Circle(); };
 private:
     std::unique_ptr<Mesh> CreateCircleMesh(float resolution);
 
