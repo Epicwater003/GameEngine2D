@@ -42,8 +42,5 @@ std::unique_ptr<Mesh> Circle::CreateCircleMesh(float resolution) {
 		indices.push_back(i);
 		indices.push_back(i+1);
 	}
-
-	
-
 	return std::make_unique<Mesh>(vertices, indices);
 }

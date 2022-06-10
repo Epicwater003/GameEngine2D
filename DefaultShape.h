@@ -14,7 +14,7 @@ class DefaultShape:
 {
 public:
 	//IShape   GetShape()       { return *this; }
-	Mesh     GetMesh()        { return *mesh; }
+	Mesh      GetMesh()        { return *mesh; }
 	glm::mat4 GetModelMatrix() { return model; }
 	glm::vec3 GetColor()       { return color; }
 

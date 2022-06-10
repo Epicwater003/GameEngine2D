@@ -25,6 +25,7 @@
 #include <string>
 #define _USE_MATH_DEFINES
 #include <math.h>
+#include <memory>
 
 #include <glm/glm.hpp>
 
@@ -143,11 +144,7 @@ int main() {
 	mainCamera.zNear = 0.01f;
 	mainCamera.zFar = 1000.f;
 
-	Texture textures[]
-	{
-		Texture("planks.png", "Diff", 0, GL_RGBA, GL_UNSIGNED_BYTE)
-	};
-	std::vector <Texture> tex(textures, textures + sizeof(textures) / sizeof(Texture));
+	
 	
 	Shader shaderProgram("Default.vert", "Default.frag");
 	
@@ -166,10 +163,15 @@ int main() {
 	static float yCoord = 1;
 	static float radius = 2;
 	static float gunPower = 1;
+
+	std::unique_ptr<Texture> texture = std::make_unique<Texture>("planks.png", "Diff", 0, GL_RGBA, GL_UNSIGNED_BYTE);
+	std::vector <Texture> tex;
+	tex.push_back(*texture);
 	
+
 	GameEngine ge;
 	ge.doStep(1);
-	ge.CreateCircleObject(1000, 2, glm::vec3(0, -358, 0), glm::vec3(0),glm::vec3(0.2,0.2,0.2), 3.14f / 4.f, FLT_MAX, true);
+	ge.CreateSquareObject(1000, 2,glm::vec3(0, -4, 0), glm::vec3(0),glm::vec3(0.2,0.2,0.2), 0, FLT_MAX, true);
 	
 	ge.CreateSquareObject(15, 3, glm::vec3(25, 5.1, 0), glm::vec3(0), glm::vec3(0.2, 0.5, 0.5), 0, 50, false);
 	ge.CreateSquareObject(8, 8, glm::vec3(25, 13.2, 0), glm::vec3(0), glm::vec3(0.2, 0.5, 0.8), 0, 50, false);
@@ -187,10 +189,10 @@ int main() {
 		if (acum >= 0.2) {
 			acum = 0.2;
 		}
-		if(acum >= dt){
+		//if(acum >= dt){
 			ge.doStep(dt);
-			acum -= dt;
-		}
+		//	acum -= dt;
+		//}
 		ge.Render(shaderProgram, ::mainCamera);
 		l.setColor(glm::vec3(1));
 		l.setPoints(glm::vec3(0), glm::vec3(xCoord, yCoord, 0));
@@ -210,9 +212,9 @@ int main() {
 		ImGui::SliderFloat("X", &xCoord, -6.f, 6.f);
 		ImGui::SliderFloat("Y", &yCoord, -6.f, 6.f);
 		ImGui::SliderFloat("Radius", &radius, 0.5, 10.f);
-		ImGui::SliderFloat("Gun power", &gunPower, 1, 6.f);
+		ImGui::SliderFloat("Gun power", &gunPower, 1, 16.f);
 		if (ImGui::Button("Fire!"))
-			ge.CreateCircleObject(radius, 70, glm::vec3(0), glm::vec3(xCoord*gunPower, yCoord*gunPower, 0));
+			ge.CreateCircleObject(radius, 70,tex, glm::vec3(0), glm::vec3(xCoord*gunPower, yCoord*gunPower, 0), glm::vec3(0), 0, radius*20);
 		if (ImGui::Button("Clear"))
 			ge.Clear();
 

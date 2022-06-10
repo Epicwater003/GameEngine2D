@@ -7,7 +7,8 @@
 #include "DefaultShape.h"
 #include "IBody.h"
 #include "RigidBody2D.h"
-
+#include "Texture.h"
+#include <string>
 
 class Circle :
     public GameObject
@@ -34,7 +35,6 @@ public:
 protected:
 private:
     std::unique_ptr<Mesh> CreateCircleMesh(float resolution);
-
 };
 
 #endif // !CIRCLE_H

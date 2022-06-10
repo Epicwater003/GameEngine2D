@@ -107,7 +107,7 @@ private:
 	
 	float zIndex = 0.;
 	float density = 1.;                  // Плотность кг/м
-	float restitution = 0.5;             // Коэффициент упругости
+	float restitution = 0.8;             // Коэффициент упругости
 	float staticFriction = 0.663;
 	float dynamicFriction = 0.336;
 	glm::vec2 direction = { 0., 1. };    // Вектор направления

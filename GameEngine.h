@@ -24,9 +24,9 @@ public:
 	
 	std::vector<GameObject> gameObjects;
 	std::vector<bool> staticObjects;
-	std::vector<glm::vec3> forces = {glm::vec3(0,-0.9,0)/4.f};
+	std::vector<glm::vec3> forces = {glm::vec3(0,-0.3,0)};
 
-	void CreateCircleObject(float radius, unsigned int resolution, glm::vec3 pos, glm::vec3 vel, glm::vec3 color = glm::vec3(1., 0.54, 0.41), float angle = 3.14f / 4.f, float mass = 10., bool isStatic = false) {
+	void CreateCircleObject(float radius, unsigned int resolution, std::vector<Texture>& tex, glm::vec3 pos, glm::vec3 vel, glm::vec3 color = glm::vec3(1., 0.54, 0.41), float angle = 3.14f / 4.f, float mass = 10., bool isStatic = false) {
 		if (radius <= 0) {
 			radius = 10.f;
 		}
@@ -37,12 +37,13 @@ public:
 		Circle c(radius, resolution);
 		c.CalculateMassCenter();
 		c.SetMass(mass);
-		c.SetMomentOfInertia((1. / 6.) * (c.radius * c.radius * c.GetMass()));
+		c.SetMomentOfInertia((1. / 12.) * (c.radius * c.radius * c.GetMass()));
 		c.SetRestitution(0.89);
 		c.SetPosition(pos);
 		c.SetVelocity(vel);
 		c.SetAngle(angle);
 		c.SetColor(color);
+		c.SetTextures(tex);
 		c.Reshape();
 		c.Update(0);
 		staticObjects.push_back(isStatic);
