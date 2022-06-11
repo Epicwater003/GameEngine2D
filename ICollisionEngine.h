@@ -8,7 +8,6 @@
 struct CollisionDetails {
 	bool isCollide = false;
 	float penetration = 0.;
-	std::vector<float> pointPenetrationDepht;
 	glm::vec3 Normal = { 0,0,0 };
 	std::vector<glm::vec3> CollidePointsA;
 	std::vector<glm::vec3> CollidePointsB;
