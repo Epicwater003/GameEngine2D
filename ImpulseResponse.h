@@ -261,9 +261,6 @@ public:
 					return;
 
 				tangent = glm::normalize(tangent);
-				float jt = -glm::dot(Vr, tangent);
-				if (abs(jt) <= 0.01)
-					return;
 
 				float staticFriction = sqrtf(a.GetStaticFriction() * b.GetStaticFriction());
 				float dynamicFriction = sqrtf(a.GetDynamicFriction() * b.GetStaticFriction());
