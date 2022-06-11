@@ -37,7 +37,7 @@ public:
 		Circle c(radius, resolution);
 		c.CalculateMassCenter();
 		c.SetMass(mass);
-		c.SetMomentOfInertia((1. / 12.) * (c.radius * c.radius * c.GetMass()));
+		c.SetMomentOfInertia((1. / 6.) * (c.radius * c.radius * c.GetMass()));
 		c.SetRestitution(0.89);
 		c.SetPosition(pos);
 		c.SetVelocity(vel);

@@ -252,7 +252,7 @@ public:
 				// Вычисляем трение
 				// Вычисляем вектор касательный к компоненте импульса расталкивающего объекты
 
-				Vr = -b.GetVelocity() + a.GetVelocity() - Cross(b.GetAngularVelocity(), rB) + Cross(a.GetAngularVelocity(), rA);
+				//Vr = -b.GetVelocity() + a.GetVelocity() - Cross(b.GetAngularVelocity(), rB) + Cross(a.GetAngularVelocity(), rA);
 
 				glm::vec3 tangent = Vr - glm::dot(Vr, impulseDirection) * impulseDirection;
 
@@ -269,10 +269,10 @@ public:
 				float dynamicFriction = sqrtf(a.GetDynamicFriction() * b.GetStaticFriction());
 				
 					
-				glm::vec3 frictionImpulse = CalculateFrictionImpulse(impulse, tangent, impactImpulse, 0.1, 0.07);
+				glm::vec3 frictionImpulse = CalculateFrictionImpulse(impulse, tangent, impactImpulse);
 
 				rotationImpulseA = Cross(rA, frictionImpulse);
-				rotationImpulseB = Cross(rB, -frictionImpulse);
+				rotationImpulseB = Cross(rB, frictionImpulse);
 
 				a.AddVelocity(1.f / (float)a.GetMass() * frictionImpulse);
 				b.AddVelocity(1.f / (float)b.GetMass() * -frictionImpulse);
