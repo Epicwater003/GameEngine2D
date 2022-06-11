@@ -156,14 +156,8 @@
     <ClInclude Include="GameObject.h">
       <Filter>Файлы заголовков\GameObjects</Filter>
     </ClInclude>
-    <ClInclude Include="ICollide.h">
-      <Filter>Interfaces</Filter>
-    </ClInclude>
     <ClInclude Include="SAT2D.h">
       <Filter>Interfaces\Implementation</Filter>
-    </ClInclude>
-    <ClInclude Include="IDrawable.h">
-      <Filter>Interfaces</Filter>
     </ClInclude>
     <ClInclude Include="DrawablePrimitive.h">
       <Filter>Файлы заголовков\Utility</Filter>

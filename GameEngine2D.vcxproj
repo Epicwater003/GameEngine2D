@@ -181,9 +181,7 @@
     <ClInclude Include="DefaultShape.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="IBody.h" />
-    <ClInclude Include="ICollide.h" />
     <ClInclude Include="ICollisionEngine.h" />
-    <ClInclude Include="IDrawable.h" />
     <ClInclude Include="ImpulseResponse.h" />
     <ClInclude Include="IShape.h" />
     <ClInclude Include="IResponseEngine.h" />

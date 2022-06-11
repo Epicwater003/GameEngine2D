@@ -154,7 +154,7 @@ int main() {
 
 
 	std::shared_ptr < AABB2D > collisionBroad = std::make_shared < AABB2D >();
-	std::shared_ptr < INarrowPhase > collisionNarrow = std::make_shared< SAT2D >();
+	std::shared_ptr < ICollisionEngine > collisionNarrow = std::make_shared< SAT2D >();
 	std::shared_ptr <IResponseEngine> responseEngine = std::make_shared< ImpulseResponseNFNR>();
 	std::shared_ptr<IResponseEngine> responseEngineWithFriction = std::make_shared<ImpulseResponseWFNR>();
 	std::shared_ptr<IResponseEngine> responseEngineWithRotation = std::make_shared<ImpulseResponseWFWR>();

@@ -18,7 +18,7 @@
 class GameEngine {
 public:
 	std::unique_ptr<IBroadPhase> broadPhase;
-	std::unique_ptr<INarrowPhase> narrowPhase = std::make_unique<SAT2D>();
+	std::unique_ptr<ICollisionEngine> narrowPhase = std::make_unique<SAT2D>();
 	std::unique_ptr<IResponseEngine> responsePhase = std::make_unique<ImpulseResponseWFWR>();
 
 	

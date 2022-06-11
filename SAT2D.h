@@ -29,7 +29,7 @@ struct ProjectionDetails {
 
 
 class SAT2D:
-	public INarrowPhase
+	public ICollisionEngine
 {
 
 public:

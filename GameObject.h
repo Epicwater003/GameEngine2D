@@ -9,7 +9,6 @@
 
 #include "IBody.h"
 #include "IShape.h"
-#include "ICollide.h"
 #include "RigidBody2D.h"
 #include "DefaultShape.h"
 
