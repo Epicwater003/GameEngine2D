@@ -1,7 +1,4 @@
-/*
-* TODO: Возможно нужно унаследоваться от GameObject
-* 
-*/
+
 
 /*
 Rock       Density : 0.6  Restitution : 0.1

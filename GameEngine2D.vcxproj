@@ -171,7 +171,6 @@
     <ClCompile Include="Texture.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="AABB2D.h" />
     <ClInclude Include="BoundingBox.h" />
     <ClInclude Include="Buffer.h" />
     <ClInclude Include="Camera.h" />

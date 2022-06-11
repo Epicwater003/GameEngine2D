@@ -43,7 +43,7 @@ protected:
 	
 private:
 	glm::mat4 model = glm::mat4(1);	         // Матрица модели
-	glm::vec3 color = { 1., 0.54, 0.41 }; // Цвет
+	glm::vec3 color = { 1., 0.54, 0.41 };    // Цвет
 	std::unique_ptr<Mesh> mesh = CreateMesh();               
 };
 

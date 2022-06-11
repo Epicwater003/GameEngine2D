@@ -1,77 +1,70 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
-  <Class Name="BaseBuffer" Collapsed="true">
-    <Position X="2.75" Y="0.5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAgAAAAABAgAAAAAAAAAAAAAAAAAAAAAAEAAAAAAA=</HashCode>
-      <FileName>Buffer.h</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="VBO" Collapsed="true">
-    <Position X="0.5" Y="1.75" Width="1.5" />
+  <Class Name="VBO">
+    <Position X="7.25" Y="2.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAgAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAEAAAEAAA=</HashCode>
       <FileName>Buffer.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="VAO" Collapsed="true">
-    <Position X="2.75" Y="1.75" Width="1.5" />
+  <Class Name="VAO">
+    <Position X="4.75" Y="1" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAggAAAAAAAAgAAAAAAAAAAAAAAAAAAAAEAACAAAA=</HashCode>
       <FileName>Buffer.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="EBO" Collapsed="true">
-    <Position X="5" Y="1.75" Width="1.5" />
+  <Class Name="EBO">
+    <Position X="9.5" Y="2.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAUAAAAACA=</HashCode>
       <FileName>Buffer.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Camera" Collapsed="true">
-    <Position X="1" Y="4.25" Width="1.5" />
+  <Class Name="Camera">
+    <Position X="2.5" Y="6.5" Width="2.25" />
     <TypeIdentifier>
       <HashCode>AAACAAAEQAAAAAAYAAAgIAAmRAACARAgBAAYAABAAAA=</HashCode>
       <FileName>Camera.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Mesh" Collapsed="true">
-    <Position X="1" Y="3.25" Width="1.5" />
+  <Class Name="Mesh">
+    <Position X="1.5" Y="1.25" Width="2.25" />
     <TypeIdentifier>
-      <HashCode>QAAAQIAAQGABAiAAAABAAAAABAAQABAABQAAAAAAAAA=</HashCode>
+      <HashCode>QAAAQIAAQGAJAmAAAABAAAAABAAQABAABQAAAAAAAAA=</HashCode>
       <FileName>Mesh.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Shader" Collapsed="true">
-    <Position X="2.75" Y="3.25" Width="1.5" />
+  <Class Name="Shader">
+    <Position X="9.25" Y="0.5" Width="2" />
     <TypeIdentifier>
       <HashCode>QDgAAAAAAAAIoBDAABIMCAAAAAAAAAAABAAAAAAAAAA=</HashCode>
       <FileName>Shader.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Texture" Collapsed="true">
-    <Position X="4.5" Y="3.25" Width="1.5" />
+  <Class Name="Texture">
+    <Position X="11.25" Y="2.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAQAgAAAAAAggACAAAAAAAAAAQABAAAAAAIEAAAAAAA=</HashCode>
       <FileName>Texture.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="DrawablePrimitive::Line" Collapsed="true">
-    <Position X="4.5" Y="5.5" Width="1.5" />
+  <Class Name="DrawablePrimitive::Line">
+    <Position X="5" Y="6" Width="2" />
     <TypeIdentifier>
       <HashCode>AQACCAAAAACAAgAAAEAAAAAAAEAQAAAAAAACgAAJAQA=</HashCode>
       <FileName>DrawablePrimitive.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="DrawablePrimitive::Point" Collapsed="true">
-    <Position X="2.75" Y="5.5" Width="1.5" />
+  <Class Name="DrawablePrimitive::Point">
+    <Position X="9.75" Y="6" Width="2.25" />
     <TypeIdentifier>
       <HashCode>AQACAAAAAACAggAAAEAAIAAAAEAQAAAAAAACgAAIAQA=</HashCode>
       <FileName>DrawablePrimitive.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Struct Name="Vertex" Collapsed="true">
-    <Position X="1" Y="5.5" Width="1.5" />
+  <Struct Name="Vertex">
+    <Position X="7.5" Y="4.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAABAAAAAAAAAAAAAIAgAAAAAAACAAAAAAAAAAAA=</HashCode>
       <FileName>Vertex.h</FileName>

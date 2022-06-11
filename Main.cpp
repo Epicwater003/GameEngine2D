@@ -43,7 +43,6 @@
 #include "Circle.h"
 #include "Square.h"
 #include "ICollisionEngine.h"
-#include "AABB2D.h"
 #include "SAT2D.h"
 #include "GameEngine.h"
 #include "DrawablePrimitive.h"
@@ -152,8 +151,6 @@ int main() {
 	DrawablePrimitive::Line l;
 	DrawablePrimitive::Point p;
 
-
-	std::shared_ptr < AABB2D > collisionBroad = std::make_shared < AABB2D >();
 	std::shared_ptr < ICollisionEngine > collisionNarrow = std::make_shared< SAT2D >();
 	std::shared_ptr <IResponseEngine> responseEngine = std::make_shared< ImpulseResponseNFNR>();
 	std::shared_ptr<IResponseEngine> responseEngineWithFriction = std::make_shared<ImpulseResponseWFNR>();

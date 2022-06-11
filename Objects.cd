@@ -1,91 +1,162 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
-  <Class Name="Particle" Collapsed="true">
-    <Position X="0.5" Y="5.25" Width="1.5" />
+  <Class Name="DrawablePrimitive::Line" Collapsed="true">
+    <Position X="5.5" Y="5.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAEAAAAAAAAA=</HashCode>
-      <FileName>Particle.h</FileName>
+      <HashCode>AQACCAAAAACAAgAAAEAAAAAAAEAQAAAAAAACgAAJAQA=</HashCode>
+      <FileName>DrawablePrimitive.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Line" Collapsed="true">
-    <Position X="5" Y="5.25" Width="1.5" />
+  <Class Name="Square" HideInheritanceLine="true">
+    <Position X="7.25" Y="5.25" Width="2" />
+    <InheritanceLine Type="GameObject" IsHidden="true" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Line.h</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="Square" Collapsed="true">
-    <Position X="7.25" Y="5.25" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAQAQAAAAAIAAAAAAAAAAAAgAAEAgAA=</HashCode>
       <FileName>Square.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Circle" Collapsed="true">
-    <Position X="2.75" Y="5.25" Width="1.5" />
+  <Class Name="Circle" HideInheritanceLine="true">
+    <Position X="3.5" Y="2.75" Width="1.75" />
+    <InheritanceLine Type="GameObject" IsHidden="true" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAACAAAAAAAAAACACIAAAgAAEAAAAAAAAEAAAA=</HashCode>
+      <HashCode>AAAAAAAACAAAAAAAAAACACIAAAgAAAAAAAAAAAEAAAA=</HashCode>
       <FileName>Circle.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="GameObject" Collapsed="true">
-    <Position X="3.75" Y="3.75" Width="1.5" />
+  <Class Name="GameObject" HideInheritanceLine="true">
+    <Position X="5.75" Y="0.75" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <InheritanceLine Type="IBody" IsHidden="true" />
+    <InheritanceLine Type="IShape" IsHidden="true" />
     <TypeIdentifier>
-      <HashCode>YAQEAUEEAKNNFkggAAgRAAIBEAgBAkzAAWzEAicDcAE=</HashCode>
+      <HashCode>cAQMAUEEAKNNFkggAAgRBQIBEAgBAkzAAWzEAicDcAE=</HashCode>
       <FileName>GameObject.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="IBody" Collapsed="true">
-    <Position X="1.25" Y="0.5" Width="1.5" />
+  <Class Name="IBody">
+    <Position X="0.75" Y="0.5" Width="2.5" />
     <TypeIdentifier>
-      <HashCode>YAAEAQAEAKNMEAggAAgQAAABAAgBAkhAAUyEAiQDcAE=</HashCode>
+      <HashCode>cAAMAQAEAKNMEAggAAgQBQABAAgBAkhAAUyEAiQDcAE=</HashCode>
       <FileName>IBody.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="IShape" Collapsed="true">
-    <Position X="6.25" Y="0.5" Width="1.5" />
+  <Class Name="IShape">
+    <Position X="8" Y="0.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAQAAEEAAAABFkAAAAAAAAAAEAAAAASAAChAAAcAAAA=</HashCode>
       <FileName>IShape.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="RigidBody2D" Collapsed="true">
-    <Position X="2.5" Y="2" Width="1.5" />
+  <Class Name="RigidBody2D" HideInheritanceLine="true">
+    <Position X="3.75" Y="6.25" Width="2.75" />
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <InheritanceLine Type="IBody" IsHidden="true" />
     <TypeIdentifier>
-      <HashCode>YIiEAQAEAKNMMAggAAgQIAABAA0BA0xAAUyEAiRDcAE=</HashCode>
+      <HashCode>cIiMAQAEAKNMMAggAAgQJQAFAA0BA0xAAUyEAiRDcAE=</HashCode>
       <FileName>RigidBody2D.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="DefaultShape" Collapsed="true">
-    <Position X="5" Y="2" Width="1.5" />
+  <Class Name="DefaultShape" HideInheritanceLine="true">
+    <Position X="10" Y="4.5" Width="1.75" />
+    <InheritanceLine Type="IShape" IsHidden="true" />
     <TypeIdentifier>
       <HashCode>AAQAAEEAAAABFkAAAAAAAAAAEAABAASAAChAAAcIAAA=</HashCode>
       <FileName>DefaultShape.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="GameEngine">
-    <Position X="9.75" Y="1.75" Width="1.5" />
-    <Compartments>
-      <Compartment Name="Methods" Collapsed="true" />
-    </Compartments>
+    <Position X="18.5" Y="2.75" Width="2" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAABAAAAQAAAAAABAAAAAAQABAAAABIAAA=</HashCode>
+      <HashCode>AAgAAAAAAQEABAAAAQABAAAAAAAAAAAAABAAABBAAAA=</HashCode>
       <FileName>GameEngine.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="IResponseEngine" Collapsed="true">
+  <Class Name="IResponseEngine">
     <Position X="11.5" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>IResponseEngine.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="ICollisionEngine" Collapsed="true">
-    <Position X="9.75" Y="0.5" Width="1.5" />
+  <Class Name="IBroadPhase" Collapsed="true">
+    <Position X="12.75" Y="3.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA=</HashCode>
       <FileName>ICollisionEngine.h</FileName>
     </TypeIdentifier>
   </Class>
+  <Class Name="SAT2D">
+    <Position X="14.75" Y="5.75" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AIAAAAAAAABAAAAAAAAAAAAAAAAACAAABFAAJAQAQAA=</HashCode>
+      <FileName>SAT2D.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ImpulseResponse">
+    <Position X="17.75" Y="9.75" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAACAAACAAAAAAAAAAAAIAAAAAAAAAACAAAAAAAA=</HashCode>
+      <FileName>ImpulseResponse.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ImpulseResponseNFNR" HideInheritanceLine="true">
+    <Position X="13.25" Y="13" Width="2.25" />
+    <InheritanceLine Type="IResponseEngine" IsHidden="true" />
+    <InheritanceLine Type="ImpulseResponse" IsHidden="true" />
+    <TypeIdentifier>
+      <HashCode>AAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ImpulseResponse.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ImpulseResponseWFNR" HideInheritanceLine="true">
+    <Position X="15.5" Y="11.25" Width="1.5" />
+    <InheritanceLine Type="IResponseEngine" IsHidden="true" />
+    <InheritanceLine Type="ImpulseResponse" IsHidden="true" />
+    <TypeIdentifier>
+      <HashCode>AAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ImpulseResponse.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ImpulseResponseWFWR" HideInheritanceLine="true">
+    <Position X="17.75" Y="11.5" Width="2.25" />
+    <InheritanceLine Type="IResponseEngine" IsHidden="true" />
+    <InheritanceLine Type="ImpulseResponse" IsHidden="true" />
+    <TypeIdentifier>
+      <HashCode>AAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAABEAAAAAAAAA=</HashCode>
+      <FileName>ImpulseResponse.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Struct Name="CollisionDetails">
+    <Position X="12.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAAAAAAAAAAAAAAAAAAgAAAAAAIAAEAAAAAMAAAAAA=</HashCode>
+      <FileName>ICollisionEngine.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="Edge" Collapsed="true">
+    <Position X="14.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>SAT2D.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="Projection" Collapsed="true">
+    <Position X="16.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAEAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>SAT2D.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="ProjectionDetails">
+    <Position X="12.75" Y="7.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABAAAAAAAAAAAAAAAIEAAAAAgAAAAAAAAAAAEAAAAAA=</HashCode>
+      <FileName>SAT2D.h</FileName>
+    </TypeIdentifier>
+  </Struct>
   <Font Name="Segoe UI" Size="9" />
 </ClassDiagram>

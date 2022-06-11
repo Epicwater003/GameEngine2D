@@ -150,9 +150,6 @@
     <ClInclude Include="DefaultShape.h">
       <Filter>Interfaces\Implementation</Filter>
     </ClInclude>
-    <ClInclude Include="AABB2D.h">
-      <Filter>Interfaces\Implementation</Filter>
-    </ClInclude>
     <ClInclude Include="GameObject.h">
       <Filter>Файлы заголовков\GameObjects</Filter>
     </ClInclude>

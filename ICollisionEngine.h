@@ -21,7 +21,6 @@ public:
 	virtual CollisionDetails GetCollisionProperties(IShape& a, IShape& b) = 0;
 protected:
 private:
-
 };
 
 
