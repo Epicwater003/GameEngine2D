@@ -228,8 +228,6 @@ public:
 					e = 0.0;
 				}
 
-
-				//e = 0;
 				float handleA = Cross(rA, impulseDirection);
 				float handleB = Cross(rB, impulseDirection);
 				float inverseMass = (1.f / a.GetMass() + 1.f / b.GetMass()) + handleA * handleA * (1.f / a.GetMomentOfInertia()) + handleB * handleB * (1.f / b.GetMomentOfInertia());
@@ -264,29 +262,22 @@ public:
 
 				tangent = glm::normalize(tangent);
 				float jt = -glm::dot(Vr, tangent);
-				if (!(abs(jt) <= 0.01)) {
+				if (abs(jt) <= 0.01)
+					return;
 
-					float staticFriction = sqrtf(a.GetStaticFriction() * b.GetStaticFriction());
-					float dynamicFriction = sqrtf(a.GetDynamicFriction() * b.GetStaticFriction());
-					float j = impactImpulse.length();
-					
-					glm::vec3 frictionImpulse = CalculateFrictionImpulse(impulse, tangent, impactImpulse, 0.1, 0.07);
-					//frictionImpulse /= collisionProps.CollidePointsA.size();
-					//frictionImpulse /= ((1.f / a.GetMomentOfInertia()) + (1.f / b.GetMomentOfInertia()));
-
-					rotationImpulseA = Cross(rA, frictionImpulse);
-					rotationImpulseB = Cross(rB, -frictionImpulse);
-
-					a.AddVelocity(1.f / (float)a.GetMass() * frictionImpulse);
-					b.AddVelocity(1.f / (float)b.GetMass() * -frictionImpulse);
-					a.AddAngularVelocity((1.f / a.GetMomentOfInertia()) * rotationImpulseA);
-					b.AddAngularVelocity((1.f / b.GetMomentOfInertia()) * rotationImpulseB);
-
-
-
-
-				}
+				float staticFriction = sqrtf(a.GetStaticFriction() * b.GetStaticFriction());
+				float dynamicFriction = sqrtf(a.GetDynamicFriction() * b.GetStaticFriction());
 				
+					
+				glm::vec3 frictionImpulse = CalculateFrictionImpulse(impulse, tangent, impactImpulse, 0.1, 0.07);
+
+				rotationImpulseA = Cross(rA, frictionImpulse);
+				rotationImpulseB = Cross(rB, -frictionImpulse);
+
+				a.AddVelocity(1.f / (float)a.GetMass() * frictionImpulse);
+				b.AddVelocity(1.f / (float)b.GetMass() * -frictionImpulse);
+				a.AddAngularVelocity((1.f / a.GetMomentOfInertia()) * rotationImpulseA);
+
 
 			}
 
