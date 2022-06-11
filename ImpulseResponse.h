@@ -269,11 +269,12 @@ public:
 				glm::vec3 frictionImpulse = CalculateFrictionImpulse(impulse, tangent, impactImpulse);
 
 				rotationImpulseA = Cross(rA, frictionImpulse);
-				rotationImpulseB = Cross(rB, frictionImpulse);
+				rotationImpulseB = Cross(rB, -frictionImpulse);
 
 				a.AddVelocity(1.f / (float)a.GetMass() * frictionImpulse);
 				b.AddVelocity(1.f / (float)b.GetMass() * -frictionImpulse);
 				a.AddAngularVelocity((1.f / a.GetMomentOfInertia()) * rotationImpulseA);
+				b.AddAngularVelocity((1.f / b.GetMomentOfInertia()) * rotationImpulseB);
 
 
 			}
